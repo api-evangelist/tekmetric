@@ -1,0 +1,222 @@
+aid: tekmetric
+url: https://raw.githubusercontent.com/api-evangelist/tekmetric/refs/heads/main/apis.yml
+name: Tekmetric
+kind: company
+description: Tekmetric is a cloud-based auto repair shop management platform (digital
+  vehicle inspections, estimates, repair orders, inventory, job/technician tracking,
+  and customer communication). Tekmetric operates a partner-gated REST API - access
+  requires requesting credentials at api.tekmetric.com and waiting for Tekmetric's
+  approval (no self-serve signup or public API reference); approved partners
+  authenticate with OAuth 2.0 client credentials against a sandbox or production
+  base URL and read shop, customer, vehicle, repair order, job, employee,
+  appointment, canned job, and inventory data.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Automotive
+- Auto Repair
+- Shop Management
+- Fleet
+- Vertical SaaS
+created: '2026-07-04'
+modified: '2026-07-04'
+specificationVersion: '0.19'
+apis:
+- aid: tekmetric:tekmetric-shops-api
+  name: Tekmetric Shops API
+  tags:
+  - Shops
+  - Locations
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://api.tekmetric.com
+  baseURL: https://shop.tekmetric.com/api/v1
+  properties:
+  - url: https://api.tekmetric.com
+    type: Documentation
+  - url: openapi/tekmetric-openapi.yml
+    type: OpenAPI
+  - url: collections/tekmetric.postman_collection.json
+    type: PostmanCollection
+  - url: collections/tekmetric.opencollection.json
+    type: OpenCollection
+  description: Lists the shop (location) records an approved OAuth client is
+    scoped to, and retrieves a single shop's hours, labor rates, and settings
+    by ID.
+- aid: tekmetric:tekmetric-customers-api
+  name: Tekmetric Customers API
+  tags:
+  - Customers
+  - CRM
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://api.tekmetric.com
+  baseURL: https://shop.tekmetric.com/api/v1
+  properties:
+  - url: https://api.tekmetric.com
+    type: Documentation
+  - url: openapi/tekmetric-openapi.yml
+    type: OpenAPI
+  - url: collections/tekmetric.postman_collection.json
+    type: PostmanCollection
+  - url: collections/tekmetric.opencollection.json
+    type: OpenCollection
+  description: Lists and searches customers by name, email, or phone within a
+    shop, and retrieves a single customer's contact info, addresses, and
+    marketing/accounts-receivable flags by ID.
+- aid: tekmetric:tekmetric-vehicles-api
+  name: Tekmetric Vehicles API
+  tags:
+  - Vehicles
+  - VIN
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://api.tekmetric.com
+  baseURL: https://shop.tekmetric.com/api/v1
+  properties:
+  - url: https://api.tekmetric.com
+    type: Documentation
+  - url: openapi/tekmetric-openapi.yml
+    type: OpenAPI
+  - url: collections/tekmetric.postman_collection.json
+    type: PostmanCollection
+  - url: collections/tekmetric.opencollection.json
+    type: OpenCollection
+  description: Lists and searches a shop's vehicles by VIN, license plate,
+    make/model, or owning customer, and retrieves a single vehicle by ID.
+- aid: tekmetric:tekmetric-repair-orders-api
+  name: Tekmetric Repair Orders API
+  tags:
+  - Repair Orders
+  - Estimates
+  - Invoices
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://api.tekmetric.com
+  baseURL: https://shop.tekmetric.com/api/v1
+  properties:
+  - url: https://api.tekmetric.com
+    type: Documentation
+  - url: openapi/tekmetric-openapi.yml
+    type: OpenAPI
+  - url: collections/tekmetric.postman_collection.json
+    type: PostmanCollection
+  - url: collections/tekmetric.opencollection.json
+    type: OpenCollection
+  description: Lists and filters repair orders by status, date, repair order
+    number, customer, or vehicle, and retrieves a single repair order by ID,
+    including totals and workflow status.
+- aid: tekmetric:tekmetric-jobs-api
+  name: Tekmetric Jobs API
+  tags:
+  - Jobs
+  - Labor
+  - Parts
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://api.tekmetric.com
+  baseURL: https://shop.tekmetric.com/api/v1
+  properties:
+  - url: https://api.tekmetric.com
+    type: Documentation
+  - url: openapi/tekmetric-openapi.yml
+    type: OpenAPI
+  - url: collections/tekmetric.postman_collection.json
+    type: PostmanCollection
+  - url: collections/tekmetric.opencollection.json
+    type: OpenCollection
+  description: Lists and filters the individual jobs (services) within repair
+    orders by vehicle, customer, repair order, authorization state, or status,
+    and retrieves a single job with its labor lines, parts, and technician
+    assignments by ID.
+- aid: tekmetric:tekmetric-employees-api
+  name: Tekmetric Employees API
+  tags:
+  - Employees
+  - Technicians
+  - Staff
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://api.tekmetric.com
+  baseURL: https://shop.tekmetric.com/api/v1
+  properties:
+  - url: https://api.tekmetric.com
+    type: Documentation
+  - url: openapi/tekmetric-openapi.yml
+    type: OpenAPI
+  - url: collections/tekmetric.postman_collection.json
+    type: PostmanCollection
+  - url: collections/tekmetric.opencollection.json
+    type: OpenCollection
+  description: Lists a shop's employees (technicians and staff) and retrieves
+    a single employee by ID.
+- aid: tekmetric:tekmetric-appointments-api
+  name: Tekmetric Appointments API
+  tags:
+  - Appointments
+  - Scheduling
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://api.tekmetric.com
+  baseURL: https://shop.tekmetric.com/api/v1
+  properties:
+  - url: https://api.tekmetric.com
+    type: Documentation
+  - url: openapi/tekmetric-openapi.yml
+    type: OpenAPI
+  - url: collections/tekmetric.postman_collection.json
+    type: PostmanCollection
+  - url: collections/tekmetric.opencollection.json
+    type: OpenCollection
+  description: Lists and filters a shop's scheduled appointments by date,
+    customer, or vehicle, and retrieves a single appointment by ID.
+- aid: tekmetric:tekmetric-inventory-api
+  name: Tekmetric Inventory API
+  tags:
+  - Inventory
+  - Parts
+  - Tires
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://api.tekmetric.com
+  baseURL: https://shop.tekmetric.com/api/v1
+  properties:
+  - url: https://api.tekmetric.com
+    type: Documentation
+  - url: openapi/tekmetric-openapi.yml
+    type: OpenAPI
+  - url: collections/tekmetric.postman_collection.json
+    type: PostmanCollection
+  - url: collections/tekmetric.opencollection.json
+    type: OpenCollection
+  description: Lists a shop's parts inventory, filterable by part type and
+    tire attributes (ratio, diameter), including stock levels.
+- aid: tekmetric:tekmetric-canned-jobs-api
+  name: Tekmetric Canned Jobs API
+  tags:
+  - Canned Jobs
+  - Menu Services
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://api.tekmetric.com
+  baseURL: https://shop.tekmetric.com/api/v1
+  properties:
+  - url: https://api.tekmetric.com
+    type: Documentation
+  - url: openapi/tekmetric-openapi.yml
+    type: OpenAPI
+  - url: collections/tekmetric.postman_collection.json
+    type: PostmanCollection
+  - url: collections/tekmetric.opencollection.json
+    type: OpenCollection
+  description: Lists a shop's canned jobs - pre-built menu services bundling
+    standard labor and parts (for example, a smart or regular canned job for
+    an oil change) - available to apply to estimates.
+common:
+- type: GitHubOrganization
+  url: https://github.com/Tekmetric
+- type: LinkedIn
+  url: https://www.linkedin.com/company/tekmetric
+- type: Website
+  url: https://www.tekmetric.com/
+- type: Documentation
+  url: https://api.tekmetric.com
+- type: Plans
+  url: plans/tekmetric-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/tekmetric-rate-limits.yml
+- type: FinOps
+  url: finops/tekmetric-finops.yml
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

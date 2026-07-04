@@ -1,0 +1,178 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Tekmetric
+providerId: tekmetric
+created: '2026-07-04'
+modified: '2026-07-04'
+reconciled: false
+tags:
+- Automotive
+- Auto Repair
+- Shop Management
+- Plans
+description: >-
+  Tekmetric's published pricing is for the shop management SaaS product
+  itself, billed per shop location with unlimited users and unlimited repair
+  orders on every tier - not for the API. The API is a separate, partner-gated
+  program: access requires requesting credentials at api.tekmetric.com and
+  Tekmetric's manual approval, and no API-specific price list is publicly
+  published. It is not known from public sources whether API access carries
+  its own fee beyond an active shop subscription.
+notes: >-
+  SaaS subscription tiers below are current per tekmetric.com/pricing as
+  reported by third-party pricing trackers; verify directly with Tekmetric
+  before quoting. Multi-location shops need one subscription per location
+  plus the Multi-Shop Management add-on to centralize administration.
+sources:
+- https://www.tekmetric.com/pricing
+- https://api.tekmetric.com
+plans:
+- id: tekmetric-start
+  name: Start
+  type: paid
+  description: >-
+    Entry shop management tier - digital vehicle inspections, estimates,
+    repair orders, inventory, and customer communication, per shop.
+  entries:
+  - label: Monthly Subscription
+    name: start_monthly
+    type: flat
+    metric: shop
+    limit: -1
+    timeFrame: month
+    geo: US
+    unit: 1
+    price: $199/month ($179/month billed annually)
+    userMultiplied: false
+  elements:
+  - name: Unlimited Users
+  - name: Unlimited Repair Orders
+  - name: Digital Vehicle Inspections
+  - name: Customer Communication
+- id: tekmetric-grow
+  name: Grow
+  type: paid
+  description: >-
+    Adds a labor guide, maintenance scheduling, and time/job clocks with
+    reporting on top of Start.
+  entries:
+  - label: Monthly Subscription
+    name: grow_monthly
+    type: flat
+    metric: shop
+    limit: -1
+    timeFrame: month
+    geo: US
+    unit: 1
+    price: $349/month ($309/month billed annually)
+    userMultiplied: false
+  elements:
+  - name: Labor Guide
+  - name: Maintenance Scheduling
+  - name: Time and Job Clocks
+  - name: Reporting
+- id: tekmetric-scale
+  name: Scale
+  type: paid
+  description: >-
+    Adds two-way texting, a real-time shop dashboard, a technician board, and
+    employee performance analytics on top of Grow.
+  entries:
+  - label: Monthly Subscription
+    name: scale_monthly
+    type: flat
+    metric: shop
+    limit: -1
+    timeFrame: month
+    geo: US
+    unit: 1
+    price: $439/month ($409/month billed annually)
+    userMultiplied: false
+  elements:
+  - name: Two-Way Texting
+  - name: Real-Time Shop Dashboard
+  - name: Technician Board
+  - name: Employee Performance Analytics
+- id: tekmetric-enterprise
+  name: Enterprise
+  type: enterprise
+  description: Custom pricing for larger or multi-location operators. Contact Tekmetric.
+  entries:
+  - label: Enterprise Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Custom Terms
+  - name: Multi-Location Support
+- id: tekmetric-addons
+  name: Add-Ons (per shop)
+  type: usage
+  description: >-
+    Optional add-ons layered on any subscription tier, billed per shop
+    location.
+  entries:
+  - label: Multi-Shop Management
+    name: addon_multishop
+    type: flat
+    metric: shop
+    limit: -1
+    timeFrame: month
+    geo: US
+    unit: 1
+    price: $70/month per shop
+    userMultiplied: false
+  - label: Tire Suite
+    name: addon_tire_suite
+    type: flat
+    metric: shop
+    limit: -1
+    timeFrame: month
+    geo: US
+    unit: 1
+    price: $39/month per shop
+    userMultiplied: false
+  - label: Marketing
+    name: addon_marketing
+    type: flat
+    metric: shop
+    limit: -1
+    timeFrame: month
+    geo: US
+    unit: 1
+    price: $345/month per shop
+    userMultiplied: false
+  elements:
+  - name: Multi-Location Administration
+  - name: Tire Fitment and Ordering
+  - name: Automated Marketing Campaigns
+- id: tekmetric-api-access
+  name: API Access
+  type: enterprise
+  description: >-
+    Partner API access is gated behind a manual request-access review at
+    api.tekmetric.com; no public price list is available for the API itself.
+  entries:
+  - label: API Partner Access
+    name: api_access
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: not published - request access and pricing directly
+    userMultiplied: false
+  elements:
+  - name: OAuth Client Credentials
+  - name: Sandbox Environment
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

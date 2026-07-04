@@ -1,0 +1,305 @@
+{
+  "info": {
+    "name": "Tekmetric API",
+    "description": "Read-only Tekmetric shop management API (Shops, Customers, Vehicles, Repair Orders, Jobs, Employees, Appointments, Inventory, Canned Jobs). Access is partner-gated - request credentials at api.tekmetric.com. Endpoints sourced from the independent, open-source github.com/beetlebugorg/tekmetric-mcp client, not an official Tekmetric reference. Base URL: https://shop.tekmetric.com/api/v1 (production) or https://sandbox.tekmetric.com/api/v1 (sandbox).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      { "key": "token", "value": "{{accessToken}}", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://shop.tekmetric.com/api/v1", "type": "string" },
+    { "key": "accessToken", "value": "", "type": "string" },
+    { "key": "shopId", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Get an access token",
+          "request": {
+            "method": "POST",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                { "key": "username", "value": "{{clientId}}", "type": "string" },
+                { "key": "password", "value": "{{clientSecret}}", "type": "string" }
+              ]
+            },
+            "header": [{ "key": "Content-Type", "value": "application/x-www-form-urlencoded" }],
+            "body": { "mode": "urlencoded", "urlencoded": [{ "key": "grant_type", "value": "client_credentials" }] },
+            "url": { "raw": "{{baseUrl}}/oauth/token", "host": ["{{baseUrl}}"], "path": ["oauth", "token"] },
+            "description": "Exchanges an approved Client ID/Secret (HTTP Basic auth) for a bearer access token."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Shops",
+      "item": [
+        {
+          "name": "List authorized shops",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/shops", "host": ["{{baseUrl}}"], "path": ["shops"] },
+            "description": "Lists the shop records the authenticated OAuth client is scoped to."
+          }
+        },
+        {
+          "name": "Get a shop",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/shops/:id", "host": ["{{baseUrl}}"], "path": ["shops", ":id"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Retrieves a single shop's hours, labor rates, and settings by ID."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Customers",
+      "item": [
+        {
+          "name": "List or search customers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/customers?shop={{shopId}}&page=0&size=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["customers"],
+              "query": [
+                { "key": "shop", "value": "{{shopId}}" },
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "20" },
+                { "key": "search", "value": "", "disabled": true }
+              ]
+            },
+            "description": "Lists a shop's customers, optionally filtered by a search term."
+          }
+        },
+        {
+          "name": "Get a customer",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/customers/:id", "host": ["{{baseUrl}}"], "path": ["customers", ":id"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Retrieves a single customer by ID."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Vehicles",
+      "item": [
+        {
+          "name": "List or search vehicles",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/vehicles?shop={{shopId}}&page=0&size=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["vehicles"],
+              "query": [
+                { "key": "shop", "value": "{{shopId}}" },
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "20" },
+                { "key": "search", "value": "", "disabled": true }
+              ]
+            },
+            "description": "Lists a shop's vehicles, optionally filtered by VIN, plate, or make/model."
+          }
+        },
+        {
+          "name": "Get a vehicle",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/vehicles/:id", "host": ["{{baseUrl}}"], "path": ["vehicles", ":id"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Retrieves a single vehicle by ID."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Repair Orders",
+      "item": [
+        {
+          "name": "List or filter repair orders",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/repair-orders?shop={{shopId}}&page=0&size=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["repair-orders"],
+              "query": [
+                { "key": "shop", "value": "{{shopId}}" },
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "20" }
+              ]
+            },
+            "description": "Lists a shop's repair orders, filterable by number, status, customer, or vehicle."
+          }
+        },
+        {
+          "name": "Get a repair order",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/repair-orders/:id", "host": ["{{baseUrl}}"], "path": ["repair-orders", ":id"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Retrieves a single repair order by ID."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Jobs",
+      "item": [
+        {
+          "name": "List or filter jobs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/jobs?shop={{shopId}}&page=0&size=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs"],
+              "query": [
+                { "key": "shop", "value": "{{shopId}}" },
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "20" }
+              ]
+            },
+            "description": "Lists jobs within repair orders, filterable by vehicle, repair order, customer, or authorization state."
+          }
+        },
+        {
+          "name": "Get a job",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/jobs/:id", "host": ["{{baseUrl}}"], "path": ["jobs", ":id"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Retrieves a single job with its labor lines, parts, and technician assignments by ID."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Employees",
+      "item": [
+        {
+          "name": "List employees",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/employees?shop={{shopId}}&page=0&size=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["employees"],
+              "query": [
+                { "key": "shop", "value": "{{shopId}}" },
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "20" }
+              ]
+            },
+            "description": "Lists a shop's employees (technicians and staff)."
+          }
+        },
+        {
+          "name": "Get an employee",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/employees/:id", "host": ["{{baseUrl}}"], "path": ["employees", ":id"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Retrieves a single employee by ID."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Appointments",
+      "item": [
+        {
+          "name": "List or filter appointments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/appointments?shop={{shopId}}&page=0&size=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["appointments"],
+              "query": [
+                { "key": "shop", "value": "{{shopId}}" },
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "20" }
+              ]
+            },
+            "description": "Lists a shop's scheduled appointments, filterable by customer or vehicle."
+          }
+        },
+        {
+          "name": "Get an appointment",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/appointments/:id", "host": ["{{baseUrl}}"], "path": ["appointments", ":id"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Retrieves a single appointment by ID."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Inventory",
+      "item": [
+        {
+          "name": "List inventory parts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/inventory?shop={{shopId}}&page=0&size=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["inventory"],
+              "query": [
+                { "key": "shop", "value": "{{shopId}}" },
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "20" }
+              ]
+            },
+            "description": "Lists a shop's parts inventory, filterable by part type and tire attributes."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Canned Jobs",
+      "item": [
+        {
+          "name": "List canned jobs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/canned-jobs?shop={{shopId}}&page=0&size=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["canned-jobs"],
+              "query": [
+                { "key": "shop", "value": "{{shopId}}" },
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "20" }
+              ]
+            },
+            "description": "Lists a shop's pre-built canned jobs (menu services)."
+          }
+        }
+      ]
+    }
+  ]
+}

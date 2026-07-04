@@ -1,0 +1,57 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Tekmetric
+providerId: tekmetric
+created: '2026-07-04'
+modified: '2026-07-04'
+reconciled: false
+tags:
+- Automotive
+- Auto Repair
+- Shop Management
+- Rate Limiting
+- Quotas
+description: >-
+  Tekmetric does not publish numeric rate limits for its partner API, since
+  the API reference itself is gated behind manual approval. The only public
+  evidence of rate-limit behavior comes from beetlebugorg/tekmetric-mcp, an
+  independent open-source client that self-throttles to 10 requests/second
+  (burst of 10) and retries on HTTP 429 and 5xx responses with exponential
+  backoff - a defensive posture chosen by that client's author, not a limit
+  confirmed as Tekmetric's actual server-side threshold.
+notes: >-
+  Treat all limits below as unverified inference from third-party client
+  behavior. Verify actual throttling and quota policy with Tekmetric directly
+  after API access is approved.
+sources:
+- https://github.com/beetlebugorg/tekmetric-mcp
+- https://api.tekmetric.com
+responseCodes:
+  throttled: 429
+limits:
+- name: Client-Side Global Rate Limit (third-party client)
+  scope: client
+  metric: requests
+  limit: 10 requests/second, burst of 10 (self-imposed by tekmetric-mcp, not a published Tekmetric limit)
+  notes: Not an officially documented Tekmetric limit; reflects one client's defensive throttling.
+- name: Tekmetric API Requests
+  scope: account
+  metric: requests
+  limit: not published
+  notes: No numeric per-account or per-endpoint request-rate limit is publicly documented by Tekmetric.
+policies:
+- name: Retry with Backoff
+  description: >-
+    Third-party client behavior treats HTTP 429 and 5xx responses as
+    temporary and retries with exponential backoff; not confirmed as an
+    official Tekmetric-documented policy.
+- name: OAuth Token Reuse
+  description: >-
+    The OAuth token endpoint is reported as idempotent - repeated calls
+    return the same token rather than issuing a new one - and tokens are
+    reported not to expire unless explicitly revoked by Tekmetric, reducing
+    the need for frequent re-authentication calls.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

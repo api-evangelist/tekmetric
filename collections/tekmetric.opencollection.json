@@ -1,0 +1,231 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tekmetric API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{accessToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": { "name": "Shops", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List authorized shops.", "type": "http" },
+          "http": { "method": "GET", "url": "https://shop.tekmetric.com/api/v1/shops" },
+          "docs": "Lists the shop records the authenticated OAuth client is scoped to."
+        },
+        {
+          "info": { "name": "Get a shop.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://shop.tekmetric.com/api/v1/shops/:id",
+            "params": [
+              { "name": "id", "value": "", "type": "path", "description": "The ID of the shop." }
+            ]
+          },
+          "docs": "Retrieves a single shop's hours, labor rates, and settings by ID."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Customers", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List or search customers.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://shop.tekmetric.com/api/v1/customers?shop=:shopId&page=0&size=20",
+            "params": [
+              { "name": "shopId", "value": "", "type": "path", "description": "The shop ID." }
+            ]
+          },
+          "docs": "Lists a shop's customers, optionally filtered by a search term."
+        },
+        {
+          "info": { "name": "Get a customer.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://shop.tekmetric.com/api/v1/customers/:id",
+            "params": [
+              { "name": "id", "value": "", "type": "path", "description": "The ID of the customer." }
+            ]
+          },
+          "docs": "Retrieves a single customer by ID."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Vehicles", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List or search vehicles.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://shop.tekmetric.com/api/v1/vehicles?shop=:shopId&page=0&size=20",
+            "params": [
+              { "name": "shopId", "value": "", "type": "path", "description": "The shop ID." }
+            ]
+          },
+          "docs": "Lists a shop's vehicles, optionally filtered by VIN, plate, or make/model."
+        },
+        {
+          "info": { "name": "Get a vehicle.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://shop.tekmetric.com/api/v1/vehicles/:id",
+            "params": [
+              { "name": "id", "value": "", "type": "path", "description": "The ID of the vehicle." }
+            ]
+          },
+          "docs": "Retrieves a single vehicle by ID."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Repair Orders", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List or filter repair orders.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://shop.tekmetric.com/api/v1/repair-orders?shop=:shopId&page=0&size=20",
+            "params": [
+              { "name": "shopId", "value": "", "type": "path", "description": "The shop ID." }
+            ]
+          },
+          "docs": "Lists a shop's repair orders, filterable by number, status, customer, or vehicle."
+        },
+        {
+          "info": { "name": "Get a repair order.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://shop.tekmetric.com/api/v1/repair-orders/:id",
+            "params": [
+              { "name": "id", "value": "", "type": "path", "description": "The ID of the repair order." }
+            ]
+          },
+          "docs": "Retrieves a single repair order by ID."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Jobs", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List or filter jobs.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://shop.tekmetric.com/api/v1/jobs?shop=:shopId&page=0&size=20",
+            "params": [
+              { "name": "shopId", "value": "", "type": "path", "description": "The shop ID." }
+            ]
+          },
+          "docs": "Lists jobs within repair orders, filterable by vehicle, repair order, customer, or authorization state."
+        },
+        {
+          "info": { "name": "Get a job.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://shop.tekmetric.com/api/v1/jobs/:id",
+            "params": [
+              { "name": "id", "value": "", "type": "path", "description": "The ID of the job." }
+            ]
+          },
+          "docs": "Retrieves a single job with its labor lines, parts, and technician assignments by ID."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Employees", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List employees.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://shop.tekmetric.com/api/v1/employees?shop=:shopId&page=0&size=20",
+            "params": [
+              { "name": "shopId", "value": "", "type": "path", "description": "The shop ID." }
+            ]
+          },
+          "docs": "Lists a shop's employees (technicians and staff)."
+        },
+        {
+          "info": { "name": "Get an employee.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://shop.tekmetric.com/api/v1/employees/:id",
+            "params": [
+              { "name": "id", "value": "", "type": "path", "description": "The ID of the employee." }
+            ]
+          },
+          "docs": "Retrieves a single employee by ID."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Appointments", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List or filter appointments.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://shop.tekmetric.com/api/v1/appointments?shop=:shopId&page=0&size=20",
+            "params": [
+              { "name": "shopId", "value": "", "type": "path", "description": "The shop ID." }
+            ]
+          },
+          "docs": "Lists a shop's scheduled appointments, filterable by customer or vehicle."
+        },
+        {
+          "info": { "name": "Get an appointment.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://shop.tekmetric.com/api/v1/appointments/:id",
+            "params": [
+              { "name": "id", "value": "", "type": "path", "description": "The ID of the appointment." }
+            ]
+          },
+          "docs": "Retrieves a single appointment by ID."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Inventory", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List inventory parts.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://shop.tekmetric.com/api/v1/inventory?shop=:shopId&page=0&size=20",
+            "params": [
+              { "name": "shopId", "value": "", "type": "path", "description": "The shop ID." }
+            ]
+          },
+          "docs": "Lists a shop's parts inventory, filterable by part type and tire attributes."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Canned Jobs", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List canned jobs.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://shop.tekmetric.com/api/v1/canned-jobs?shop=:shopId&page=0&size=20",
+            "params": [
+              { "name": "shopId", "value": "", "type": "path", "description": "The shop ID." }
+            ]
+          },
+          "docs": "Lists a shop's pre-built canned jobs (menu services)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

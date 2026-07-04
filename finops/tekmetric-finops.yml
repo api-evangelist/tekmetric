@@ -1,0 +1,91 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Tekmetric
+providerId: tekmetric
+created: '2026-07-04'
+modified: '2026-07-04'
+reconciled: false
+tags:
+- Automotive
+- Auto Repair
+- Shop Management
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Tekmetric spend. The dominant cost is the per-shop SaaS
+  subscription (Start/Grow/Scale/Enterprise, plus optional per-shop add-ons
+  such as Multi-Shop Management, Tire Suite, and Marketing), billed flat per
+  location per month regardless of user count or repair order volume. The
+  partner API sits outside this published pricing - it is gated behind manual
+  approval at api.tekmetric.com with no public API-specific price list, so it
+  is not known whether API usage carries an incremental charge beyond an
+  active shop subscription.
+notes: >-
+  Because Tekmetric bills flat per shop rather than per API call or per
+  record, FinOps optimization for this provider is mostly about right-sizing
+  the subscription tier and add-ons per location rather than API usage
+  metering.
+sources:
+- https://www.tekmetric.com/pricing
+- https://api.tekmetric.com
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Tekmetric
+serviceCategory: Vertical SaaS - Auto Repair Shop Management
+billingModel:
+  pricingCategory: Flat-Rate Subscription
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+  - Purchase
+  - Usage
+  - Adjustment
+focusColumns:
+  ServiceName: Tekmetric Shop Management
+  ServiceCategory: Vertical SaaS - Auto Repair Shop Management
+  ProviderName: Tekmetric
+  PublisherName: Tekmetric
+  InvoiceIssuerName: Tekmetric
+  BillingCurrency: USD
+  ChargeCategory: Purchase
+  PricingCategory: Flat-Rate Subscription
+meters:
+- name: shop_subscription
+  description: Flat monthly fee per shop location for the Start/Grow/Scale/Enterprise tier.
+  unit: shops
+  aggregation: sum
+  dimensions:
+  - shop
+  - tier
+- name: addon_subscription
+  description: Flat monthly fee per shop for optional add-ons (Multi-Shop Management, Tire Suite, Marketing).
+  unit: shops
+  aggregation: sum
+  dimensions:
+  - shop
+  - addon
+- name: api_access
+  description: Cost of partner API access, if any - not publicly published; verify with Tekmetric after approval.
+  unit: contracts
+  aggregation: sum
+  dimensions:
+  - account
+principles:
+- name: Visibility
+  description: Track subscription tier and enabled add-ons per shop location; request written API-access terms from Tekmetric since none are published.
+- name: Allocation
+  description: Map each shop subscription and its add-ons to the owning location/franchisee for cost accountability.
+- name: Optimization
+  description: Right-size the subscription tier (Start/Grow/Scale) to the features actually used per shop rather than defaulting every location to the top tier; disable unused add-ons.
+- name: Accountability
+  description: Assign an owner per shop subscription and review tier/add-on fit against usage on a recurring cadence.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

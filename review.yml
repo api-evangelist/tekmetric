@@ -1,0 +1,117 @@
+aid: tekmetric
+name: Tekmetric
+review:
+  question: Does Tekmetric expose a documented public WebSocket API?
+  answer: false
+  date: '2026-07-04'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was authored. Tekmetric's own API surface - as
+    evidenced through the independent tekmetric-mcp client, the only public
+    source describing concrete request/response behavior - is plain
+    request/response REST over HTTPS with no server-push transport
+    (WebSocket or SSE) to model. Tekmetric does not publish a self-serve API
+    reference at all, gated or otherwise, so there is no first-party
+    documentation surface to check for an AsyncAPI-eligible streaming
+    channel.
+findings:
+  summary: |
+    Tekmetric does not publish a documented public WebSocket API. Tekmetric
+    operates a partner-gated REST API for its auto repair shop management
+    platform: prospective integrators request access at api.tekmetric.com and
+    wait for Tekmetric's manual approval (reported at roughly 2-3 weeks)
+    before receiving OAuth 2.0 client_credentials Client ID/Secret
+    credentials. There is no self-serve developer portal, no public API
+    reference document, and developer.tekmetric.com does not resolve. The
+    only public, technically concrete description of the API's shape comes
+    from beetlebugorg/tekmetric-mcp, an independent, actively maintained
+    open-source Go client and MCP server that holds approved credentials and
+    calls the live sandbox/production API; its source shows plain HTTPS
+    GET requests returning JSON in a Spring Data Page envelope, with no
+    WebSocket (ws:// or wss://) endpoint referenced anywhere. That project
+    explicitly disclaims any official affiliation with Tekmetric.
+  accessModel: |
+    Not self-serve. Access requires submitting a request through
+    api.tekmetric.com and passing Tekmetric's manual partner review; no
+    public pricing, SLA, or reference documentation is published for the API
+    itself (separately from the published per-shop SaaS subscription
+    pricing for the shop management product).
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://shop.tekmetric.com/api/v1
+      documented: false
+      note: >-
+        Confirmed to exist and to be plain request/response REST via the
+        independent tekmetric-mcp client's source code and its OAuth token
+        exchange against this base URL, but not documented by Tekmetric in
+        any public, self-serve reference.
+    - protocol: REST
+      scheme: https
+      baseURL: https://sandbox.tekmetric.com/api/v1
+      documented: false
+      note: Sandbox environment for the same API, referenced identically in the third-party client.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint, URL, or message reference is documented anywhere in any public source for Tekmetric's API.
+  endpointsConfirmedRest:
+    - POST https://shop.tekmetric.com/api/v1/oauth/token
+    - GET  https://shop.tekmetric.com/api/v1/shops
+    - GET  https://shop.tekmetric.com/api/v1/shops/{id}
+    - GET  https://shop.tekmetric.com/api/v1/customers
+    - GET  https://shop.tekmetric.com/api/v1/customers/{id}
+    - GET  https://shop.tekmetric.com/api/v1/vehicles
+    - GET  https://shop.tekmetric.com/api/v1/vehicles/{id}
+    - GET  https://shop.tekmetric.com/api/v1/repair-orders
+    - GET  https://shop.tekmetric.com/api/v1/repair-orders/{id}
+    - GET  https://shop.tekmetric.com/api/v1/jobs
+    - GET  https://shop.tekmetric.com/api/v1/jobs/{id}
+    - GET  https://shop.tekmetric.com/api/v1/employees
+    - GET  https://shop.tekmetric.com/api/v1/employees/{id}
+    - GET  https://shop.tekmetric.com/api/v1/appointments
+    - GET  https://shop.tekmetric.com/api/v1/appointments/{id}
+    - GET  https://shop.tekmetric.com/api/v1/inventory
+    - GET  https://shop.tekmetric.com/api/v1/canned-jobs
+  endpointsModeled: true
+  endpointsModeledNote: |
+    All endpoints above are transcribed from beetlebugorg/tekmetric-mcp's
+    Go source (pkg/tekmetric/*.go), an unofficial third-party client with
+    approved API credentials that calls the live API - they are not copied
+    from an official Tekmetric-published specification, because Tekmetric
+    does not make one publicly available. No write (POST/PATCH/DELETE)
+    business endpoints were included because the reference client only
+    implements reads; a fuller partner API (creating repair orders, jobs,
+    customers, etc.) may exist but is not evidenced in any public source, so
+    it was not fabricated here.
+sources:
+  - url: https://api.tekmetric.com
+    type: Documentation
+    note: Request-access landing page for the partner API; no self-serve reference or endpoint documentation is published here.
+  - url: https://github.com/beetlebugorg/tekmetric-mcp
+    type: SourceCode
+    note: >-
+      Independent, actively maintained open-source Go client and MCP server
+      with approved Tekmetric API credentials; its source (pkg/tekmetric/*.go)
+      is the basis for every endpoint, parameter, and auth detail documented
+      in this repository. Explicitly states it is not an official Tekmetric
+      product.
+  - url: https://www.tekmetric.com/
+    type: Website
+    note: Product marketing site; no technical API reference.
+  - url: https://www.tekmetric.com/pricing
+    type: Documentation
+    note: Published per-shop SaaS subscription pricing (Start/Grow/Scale/Enterprise plus add-ons); no API-specific pricing.
+  - url: https://github.com/Tekmetric
+    type: SourceCode
+    note: Official Tekmetric GitHub organization; hosts one public repository (an interview exercise), no API-related code.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket protocol surface is documented anywhere for Tekmetric, and
+    the only technically concrete evidence of its API - a third-party open
+    source client - shows plain request/response REST with no server-push
+    transport to model. No AsyncAPI document was created because there is no
+    streaming channel, documented or otherwise, to describe.
