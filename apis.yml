@@ -203,6 +203,10 @@ apis:
     standard labor and parts (for example, a smart or regular canned job for
     an oil change) - available to apply to estimates.
 common:
+- type: Authentication
+  url: authentication/tekmetric-authentication.yml
+- type: OAuthScopes
+  url: scopes/tekmetric-scopes.yml
 - type: GitHubOrganization
   url: https://github.com/Tekmetric
 - type: LinkedIn

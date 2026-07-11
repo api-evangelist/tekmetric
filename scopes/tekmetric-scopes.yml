@@ -1,0 +1,17 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/tekmetric-openapi.yml
+schemes:
+- name: oauth2
+  source: openapi/tekmetric-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://shop.tekmetric.com/api/v1/oauth/token
+  description: OAuth 2.0 client credentials grant. Requires an approved Client ID/Secret issued
+    by Tekmetric after a manual request-access review (reported at roughly 2-3 weeks).
+docs: https://api.tekmetric.com
+note: Tekmetric does not publish OAuth permission scopes - the API uses an OAuth 2.0
+  client credentials grant behind a partner approval gate (https://api.tekmetric.com),
+  and the token response's scope field carries the space-separated Shop IDs the client
+  is authorized for rather than permission scopes.
+scopes: []
