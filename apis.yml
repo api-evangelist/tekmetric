@@ -203,6 +203,10 @@ apis:
     standard labor and parts (for example, a smart or regular canned job for
     an oil change) - available to apply to estimates.
 common:
+- type: TrustCenter
+  url: security/tekmetric-trust-center.yml
+- type: DomainSecurity
+  url: security/tekmetric-domain-security.yml
 - type: Authentication
   url: authentication/tekmetric-authentication.yml
 - type: OAuthScopes
