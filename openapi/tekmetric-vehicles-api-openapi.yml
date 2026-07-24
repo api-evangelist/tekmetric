@@ -1,0 +1,163 @@
+openapi: 3.0.3
+info:
+  title: Tekmetric Appointments Vehicles API
+  description: Tekmetric is a cloud-based auto repair shop management platform. Its REST API is partner-gated - access requires requesting credentials at api.tekmetric.com and Tekmetric's approval (reported at roughly 2-3 weeks); there is no self-serve signup or public API reference. The endpoints, parameters, and response envelope documented here are sourced from beetlebugorg/tekmetric-mcp, an independent open-source client that holds approved credentials and calls the live API - not from an official Tekmetric API reference document. Only read (GET) endpoints are documented because that is all the reference client implements; write endpoints may exist but are not evidenced in any public source.
+  version: v1
+  contact:
+    name: Tekmetric
+    url: https://www.tekmetric.com/
+  x-source-note: Endpoint shapes confirmed via github.com/beetlebugorg/tekmetric-mcp (pkg/tekmetric/*.go), an unofficial, independently maintained client, not an official Tekmetric-published specification.
+servers:
+- url: https://shop.tekmetric.com/api/v1
+  description: Production
+- url: https://sandbox.tekmetric.com/api/v1
+  description: Sandbox
+security:
+- oauth2: []
+tags:
+- name: Vehicles
+  description: Customer vehicles serviced by the shop.
+paths:
+  /vehicles:
+    get:
+      operationId: listVehicles
+      tags:
+      - Vehicles
+      summary: List or search vehicles
+      description: Lists a shop's vehicles, optionally filtered by a search term (VIN, license plate, make/model) or owning customer.
+      parameters:
+      - $ref: '#/components/parameters/Shop'
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/Size'
+      - name: search
+        in: query
+        required: false
+        description: Free-text search across VIN, license plate, and make/model.
+        schema:
+          type: string
+      - name: customerId
+        in: query
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: A page of vehicles.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehiclePage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /vehicles/{id}:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      operationId: getVehicle
+      tags:
+      - Vehicles
+      summary: Get a vehicle
+      description: Retrieves a single vehicle by ID.
+      responses:
+        '200':
+          description: The requested vehicle.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    Page:
+      type: object
+      description: Spring Data Page envelope used by all list endpoints.
+      properties:
+        totalPages:
+          type: integer
+        totalElements:
+          type: integer
+        first:
+          type: boolean
+        last:
+          type: boolean
+        size:
+          type: integer
+        number:
+          type: integer
+        numberOfElements:
+          type: integer
+    Vehicle:
+      type: object
+      properties:
+        id:
+          type: integer
+        customerId:
+          type: integer
+        vin:
+          type: string
+        year:
+          type: integer
+        make:
+          type: string
+        model:
+          type: string
+        subModel:
+          type: string
+        licensePlate:
+          type: string
+    VehiclePage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          content:
+            type: array
+            items:
+              $ref: '#/components/schemas/Vehicle'
+  parameters:
+    Shop:
+      name: shop
+      in: query
+      required: false
+      description: The shop ID to scope the request to.
+      schema:
+        type: integer
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The numeric ID of the resource.
+      schema:
+        type: integer
+    Page:
+      name: page
+      in: query
+      required: false
+      description: Zero-based page number.
+      schema:
+        type: integer
+        default: 0
+    Size:
+      name: size
+      in: query
+      required: false
+      description: Page size.
+      schema:
+        type: integer
+        default: 20
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+    Unauthorized:
+      description: Missing, invalid, or revoked access token.
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 client credentials grant. Requires an approved Client ID/Secret issued by Tekmetric after a manual request-access review (reported at roughly 2-3 weeks).
+      flows:
+        clientCredentials:
+          tokenUrl: https://shop.tekmetric.com/api/v1/oauth/token
+          scopes: {}

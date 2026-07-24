@@ -1,0 +1,184 @@
+openapi: 3.0.3
+info:
+  title: Tekmetric Appointments Repair Orders API
+  description: Tekmetric is a cloud-based auto repair shop management platform. Its REST API is partner-gated - access requires requesting credentials at api.tekmetric.com and Tekmetric's approval (reported at roughly 2-3 weeks); there is no self-serve signup or public API reference. The endpoints, parameters, and response envelope documented here are sourced from beetlebugorg/tekmetric-mcp, an independent open-source client that holds approved credentials and calls the live API - not from an official Tekmetric API reference document. Only read (GET) endpoints are documented because that is all the reference client implements; write endpoints may exist but are not evidenced in any public source.
+  version: v1
+  contact:
+    name: Tekmetric
+    url: https://www.tekmetric.com/
+  x-source-note: Endpoint shapes confirmed via github.com/beetlebugorg/tekmetric-mcp (pkg/tekmetric/*.go), an unofficial, independently maintained client, not an official Tekmetric-published specification.
+servers:
+- url: https://shop.tekmetric.com/api/v1
+  description: Production
+- url: https://sandbox.tekmetric.com/api/v1
+  description: Sandbox
+security:
+- oauth2: []
+tags:
+- name: Repair Orders
+  description: Estimates and invoices tracking a vehicle's work.
+paths:
+  /repair-orders:
+    get:
+      operationId: listRepairOrders
+      tags:
+      - Repair Orders
+      summary: List or filter repair orders
+      description: Lists a shop's repair orders, filterable by repair order number, status, customer, or vehicle. Combining a date-range filter with a deleted-date filter returns only deleted records; call separately for active/updated versus deleted records and merge client-side.
+      parameters:
+      - $ref: '#/components/parameters/Shop'
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/Size'
+      - name: repairOrderNumber
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: repairOrderStatusId
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: customerId
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: vehicleId
+        in: query
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: A page of repair orders.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RepairOrderPage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /repair-orders/{id}:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      operationId: getRepairOrder
+      tags:
+      - Repair Orders
+      summary: Get a repair order
+      description: Retrieves a single repair order, including totals and workflow status, by ID.
+      responses:
+        '200':
+          description: The requested repair order.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RepairOrder'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    Page:
+      type: object
+      description: Spring Data Page envelope used by all list endpoints.
+      properties:
+        totalPages:
+          type: integer
+        totalElements:
+          type: integer
+        first:
+          type: boolean
+        last:
+          type: boolean
+        size:
+          type: integer
+        number:
+          type: integer
+        numberOfElements:
+          type: integer
+    Currency:
+      type: number
+      format: double
+      description: Monetary value in dollars (Tekmetric stores cents internally).
+    RepairOrderPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          content:
+            type: array
+            items:
+              $ref: '#/components/schemas/RepairOrder'
+    RepairOrder:
+      type: object
+      properties:
+        id:
+          type: integer
+        shopId:
+          type: integer
+        repairOrderNumber:
+          type: integer
+        customerId:
+          type: integer
+        vehicleId:
+          type: integer
+        repairOrderStatusId:
+          type: integer
+        totalSales:
+          $ref: '#/components/schemas/Currency'
+        createdDate:
+          type: string
+          format: date-time
+        updatedDate:
+          type: string
+          format: date-time
+        deletedDate:
+          type: string
+          format: date-time
+          nullable: true
+  parameters:
+    Shop:
+      name: shop
+      in: query
+      required: false
+      description: The shop ID to scope the request to.
+      schema:
+        type: integer
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The numeric ID of the resource.
+      schema:
+        type: integer
+    Page:
+      name: page
+      in: query
+      required: false
+      description: Zero-based page number.
+      schema:
+        type: integer
+        default: 0
+    Size:
+      name: size
+      in: query
+      required: false
+      description: Page size.
+      schema:
+        type: integer
+        default: 20
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+    Unauthorized:
+      description: Missing, invalid, or revoked access token.
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 client credentials grant. Requires an approved Client ID/Secret issued by Tekmetric after a manual request-access review (reported at roughly 2-3 weeks).
+      flows:
+        clientCredentials:
+          tokenUrl: https://shop.tekmetric.com/api/v1/oauth/token
+          scopes: {}

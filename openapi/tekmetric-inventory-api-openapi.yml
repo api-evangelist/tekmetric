@@ -1,0 +1,140 @@
+openapi: 3.0.3
+info:
+  title: Tekmetric Appointments Inventory API
+  description: Tekmetric is a cloud-based auto repair shop management platform. Its REST API is partner-gated - access requires requesting credentials at api.tekmetric.com and Tekmetric's approval (reported at roughly 2-3 weeks); there is no self-serve signup or public API reference. The endpoints, parameters, and response envelope documented here are sourced from beetlebugorg/tekmetric-mcp, an independent open-source client that holds approved credentials and calls the live API - not from an official Tekmetric API reference document. Only read (GET) endpoints are documented because that is all the reference client implements; write endpoints may exist but are not evidenced in any public source.
+  version: v1
+  contact:
+    name: Tekmetric
+    url: https://www.tekmetric.com/
+  x-source-note: Endpoint shapes confirmed via github.com/beetlebugorg/tekmetric-mcp (pkg/tekmetric/*.go), an unofficial, independently maintained client, not an official Tekmetric-published specification.
+servers:
+- url: https://shop.tekmetric.com/api/v1
+  description: Production
+- url: https://sandbox.tekmetric.com/api/v1
+  description: Sandbox
+security:
+- oauth2: []
+tags:
+- name: Inventory
+  description: Parts and tire inventory.
+paths:
+  /inventory:
+    get:
+      operationId: listInventory
+      tags:
+      - Inventory
+      summary: List inventory parts
+      description: Lists a shop's parts inventory, filterable by part type and tire attributes (ratio, diameter).
+      parameters:
+      - $ref: '#/components/parameters/Shop'
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/Size'
+      - name: partTypeId
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: ratio
+        in: query
+        required: false
+        description: Tire aspect ratio, when filtering tire inventory.
+        schema:
+          type: number
+      - name: diameter
+        in: query
+        required: false
+        description: Tire diameter, when filtering tire inventory.
+        schema:
+          type: number
+      responses:
+        '200':
+          description: A page of inventory parts.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryPartPage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    Page:
+      type: object
+      description: Spring Data Page envelope used by all list endpoints.
+      properties:
+        totalPages:
+          type: integer
+        totalElements:
+          type: integer
+        first:
+          type: boolean
+        last:
+          type: boolean
+        size:
+          type: integer
+        number:
+          type: integer
+        numberOfElements:
+          type: integer
+    InventoryPart:
+      type: object
+      properties:
+        id:
+          type: integer
+        partTypeId:
+          type: integer
+        partNumber:
+          type: string
+        description:
+          type: string
+        quantityOnHand:
+          type: number
+        ratio:
+          type: number
+          nullable: true
+        diameter:
+          type: number
+          nullable: true
+    InventoryPartPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          content:
+            type: array
+            items:
+              $ref: '#/components/schemas/InventoryPart'
+  parameters:
+    Shop:
+      name: shop
+      in: query
+      required: false
+      description: The shop ID to scope the request to.
+      schema:
+        type: integer
+    Page:
+      name: page
+      in: query
+      required: false
+      description: Zero-based page number.
+      schema:
+        type: integer
+        default: 0
+    Size:
+      name: size
+      in: query
+      required: false
+      description: Page size.
+      schema:
+        type: integer
+        default: 20
+  responses:
+    Unauthorized:
+      description: Missing, invalid, or revoked access token.
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 client credentials grant. Requires an approved Client ID/Secret issued by Tekmetric after a manual request-access review (reported at roughly 2-3 weeks).
+      flows:
+        clientCredentials:
+          tokenUrl: https://shop.tekmetric.com/api/v1/oauth/token
+          scopes: {}

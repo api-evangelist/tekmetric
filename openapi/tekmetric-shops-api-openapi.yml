@@ -1,0 +1,157 @@
+openapi: 3.0.3
+info:
+  title: Tekmetric Appointments Shops API
+  description: Tekmetric is a cloud-based auto repair shop management platform. Its REST API is partner-gated - access requires requesting credentials at api.tekmetric.com and Tekmetric's approval (reported at roughly 2-3 weeks); there is no self-serve signup or public API reference. The endpoints, parameters, and response envelope documented here are sourced from beetlebugorg/tekmetric-mcp, an independent open-source client that holds approved credentials and calls the live API - not from an official Tekmetric API reference document. Only read (GET) endpoints are documented because that is all the reference client implements; write endpoints may exist but are not evidenced in any public source.
+  version: v1
+  contact:
+    name: Tekmetric
+    url: https://www.tekmetric.com/
+  x-source-note: Endpoint shapes confirmed via github.com/beetlebugorg/tekmetric-mcp (pkg/tekmetric/*.go), an unofficial, independently maintained client, not an official Tekmetric-published specification.
+servers:
+- url: https://shop.tekmetric.com/api/v1
+  description: Production
+- url: https://sandbox.tekmetric.com/api/v1
+  description: Sandbox
+security:
+- oauth2: []
+tags:
+- name: Shops
+  description: Shop locations, hours, labor rates, and settings.
+paths:
+  /oauth/token:
+    post:
+      operationId: getAccessToken
+      tags:
+      - Shops
+      summary: Obtain an OAuth 2.0 access token
+      description: Exchanges an approved Client ID/Secret (sent as HTTP Basic auth) for a bearer access token via the client_credentials grant. The token's scope field lists the space-separated shop IDs the client may access.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+              - grant_type
+              properties:
+                grant_type:
+                  type: string
+                  enum:
+                  - client_credentials
+      responses:
+        '200':
+          description: Access token issued.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /shops:
+    get:
+      operationId: listShops
+      tags:
+      - Shops
+      summary: List authorized shops
+      description: Lists the shop records the authenticated OAuth client is scoped to.
+      responses:
+        '200':
+          description: A list of shops.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Shop'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /shops/{id}:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      operationId: getShop
+      tags:
+      - Shops
+      summary: Get a shop
+      description: Retrieves a single shop's hours, labor rates, and settings by ID.
+      responses:
+        '200':
+          description: The requested shop.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shop'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    Shop:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+        phone:
+          type: string
+        timezone:
+          type: string
+    TokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        token_type:
+          type: string
+          example: Bearer
+        expires_in:
+          type: integer
+          description: Reported token lifetime in seconds. Per third-party accounts, tokens remain valid until explicitly revoked by Tekmetric regardless of this value.
+        scope:
+          type: string
+          description: Space-separated shop IDs the client is authorized for.
+    Address:
+      type: object
+      properties:
+        id:
+          type: integer
+        address1:
+          type: string
+        address2:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip:
+          type: string
+        streetAddress:
+          type: string
+        fullAddress:
+          type: string
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The numeric ID of the resource.
+      schema:
+        type: integer
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+    Unauthorized:
+      description: Missing, invalid, or revoked access token.
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 client credentials grant. Requires an approved Client ID/Secret issued by Tekmetric after a manual request-access review (reported at roughly 2-3 weeks).
+      flows:
+        clientCredentials:
+          tokenUrl: https://shop.tekmetric.com/api/v1/oauth/token
+          scopes: {}
