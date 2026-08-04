@@ -1,0 +1,883 @@
+openapi: 3.0.3
+info:
+  title: Tekmetric API
+  description: >-
+    Tekmetric is a cloud-based auto repair shop management platform. Its REST
+    API is partner-gated - access requires requesting credentials at
+    api.tekmetric.com and Tekmetric's approval (reported at roughly 2-3
+    weeks); there is no self-serve signup or public API reference. The
+    endpoints, parameters, and response envelope documented here are sourced
+    from beetlebugorg/tekmetric-mcp, an independent open-source client that
+    holds approved credentials and calls the live API - not from an official
+    Tekmetric API reference document. Only read (GET) endpoints are
+    documented because that is all the reference client implements; write
+    endpoints may exist but are not evidenced in any public source.
+  version: v1
+  contact:
+    name: Tekmetric
+    url: https://www.tekmetric.com/
+  x-source-note: >-
+    Endpoint shapes confirmed via github.com/beetlebugorg/tekmetric-mcp
+    (pkg/tekmetric/*.go), an unofficial, independently maintained client, not
+    an official Tekmetric-published specification.
+servers:
+  - url: https://shop.tekmetric.com/api/v1
+    description: Production
+  - url: https://sandbox.tekmetric.com/api/v1
+    description: Sandbox
+security:
+  - oauth2: []
+tags:
+  - name: Shops
+    description: Shop locations, hours, labor rates, and settings.
+  - name: Customers
+    description: Shop customers and their contact information.
+  - name: Vehicles
+    description: Customer vehicles serviced by the shop.
+  - name: Repair Orders
+    description: Estimates and invoices tracking a vehicle's work.
+  - name: Jobs
+    description: Individual services (labor and parts) within a repair order.
+  - name: Employees
+    description: Shop technicians and staff.
+  - name: Appointments
+    description: Scheduled shop appointments.
+  - name: Inventory
+    description: Parts and tire inventory.
+  - name: Canned Jobs
+    description: Pre-built menu services bundling standard labor and parts.
+paths:
+  /oauth/token:
+    post:
+      operationId: getAccessToken
+      tags:
+        - Shops
+      summary: Obtain an OAuth 2.0 access token
+      description: >-
+        Exchanges an approved Client ID/Secret (sent as HTTP Basic auth) for a
+        bearer access token via the client_credentials grant. The token's
+        scope field lists the space-separated shop IDs the client may access.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - grant_type
+              properties:
+                grant_type:
+                  type: string
+                  enum:
+                    - client_credentials
+      responses:
+        '200':
+          description: Access token issued.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /shops:
+    get:
+      operationId: listShops
+      tags:
+        - Shops
+      summary: List authorized shops
+      description: Lists the shop records the authenticated OAuth client is scoped to.
+      responses:
+        '200':
+          description: A list of shops.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Shop'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /shops/{id}:
+    parameters:
+      - $ref: '#/components/parameters/Id'
+    get:
+      operationId: getShop
+      tags:
+        - Shops
+      summary: Get a shop
+      description: Retrieves a single shop's hours, labor rates, and settings by ID.
+      responses:
+        '200':
+          description: The requested shop.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shop'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /customers:
+    get:
+      operationId: listCustomers
+      tags:
+        - Customers
+      summary: List or search customers
+      description: >-
+        Lists a shop's customers, optionally filtered by a search term
+        (name, email, or phone) and customer attributes.
+      parameters:
+        - $ref: '#/components/parameters/Shop'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Size'
+        - name: search
+          in: query
+          required: false
+          description: Free-text search across name, email, and phone.
+          schema:
+            type: string
+        - name: eligibleForAccountsReceivable
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: okForMarketing
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: customerTypeId
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A page of customers.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerPage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /customers/{id}:
+    parameters:
+      - $ref: '#/components/parameters/Id'
+    get:
+      operationId: getCustomer
+      tags:
+        - Customers
+      summary: Get a customer
+      description: >-
+        Retrieves a single customer's contact info, addresses, and
+        marketing/accounts-receivable flags by ID.
+      responses:
+        '200':
+          description: The requested customer.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /vehicles:
+    get:
+      operationId: listVehicles
+      tags:
+        - Vehicles
+      summary: List or search vehicles
+      description: >-
+        Lists a shop's vehicles, optionally filtered by a search term (VIN,
+        license plate, make/model) or owning customer.
+      parameters:
+        - $ref: '#/components/parameters/Shop'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Size'
+        - name: search
+          in: query
+          required: false
+          description: Free-text search across VIN, license plate, and make/model.
+          schema:
+            type: string
+        - name: customerId
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A page of vehicles.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehiclePage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /vehicles/{id}:
+    parameters:
+      - $ref: '#/components/parameters/Id'
+    get:
+      operationId: getVehicle
+      tags:
+        - Vehicles
+      summary: Get a vehicle
+      description: Retrieves a single vehicle by ID.
+      responses:
+        '200':
+          description: The requested vehicle.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /repair-orders:
+    get:
+      operationId: listRepairOrders
+      tags:
+        - Repair Orders
+      summary: List or filter repair orders
+      description: >-
+        Lists a shop's repair orders, filterable by repair order number,
+        status, customer, or vehicle. Combining a date-range filter with a
+        deleted-date filter returns only deleted records; call separately for
+        active/updated versus deleted records and merge client-side.
+      parameters:
+        - $ref: '#/components/parameters/Shop'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Size'
+        - name: repairOrderNumber
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: repairOrderStatusId
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: customerId
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: vehicleId
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A page of repair orders.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RepairOrderPage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /repair-orders/{id}:
+    parameters:
+      - $ref: '#/components/parameters/Id'
+    get:
+      operationId: getRepairOrder
+      tags:
+        - Repair Orders
+      summary: Get a repair order
+      description: Retrieves a single repair order, including totals and workflow status, by ID.
+      responses:
+        '200':
+          description: The requested repair order.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RepairOrder'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /jobs:
+    get:
+      operationId: listJobs
+      tags:
+        - Jobs
+      summary: List or filter jobs
+      description: >-
+        Lists the individual jobs (services) within repair orders, filterable
+        by vehicle, repair order, customer, authorization state, or repair
+        order status.
+      parameters:
+        - $ref: '#/components/parameters/Shop'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Size'
+        - name: vehicleId
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: repairOrderId
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: customerId
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: authorized
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: repairOrderStatusId
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A page of jobs.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobPage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /jobs/{id}:
+    parameters:
+      - $ref: '#/components/parameters/Id'
+    get:
+      operationId: getJob
+      tags:
+        - Jobs
+      summary: Get a job
+      description: >-
+        Retrieves a single job with its labor lines, parts, and technician
+        assignments by ID.
+      responses:
+        '200':
+          description: The requested job.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /employees:
+    get:
+      operationId: listEmployees
+      tags:
+        - Employees
+      summary: List employees
+      description: Lists a shop's employees (technicians and staff).
+      parameters:
+        - $ref: '#/components/parameters/Shop'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Size'
+      responses:
+        '200':
+          description: A page of employees.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeePage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /employees/{id}:
+    parameters:
+      - $ref: '#/components/parameters/Id'
+    get:
+      operationId: getEmployee
+      tags:
+        - Employees
+      summary: Get an employee
+      description: Retrieves a single employee by ID.
+      responses:
+        '200':
+          description: The requested employee.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /appointments:
+    get:
+      operationId: listAppointments
+      tags:
+        - Appointments
+      summary: List or filter appointments
+      description: Lists a shop's scheduled appointments, filterable by customer or vehicle.
+      parameters:
+        - $ref: '#/components/parameters/Shop'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Size'
+        - name: customerId
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: vehicleId
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: includeDeleted
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: A page of appointments.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentPage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /appointments/{id}:
+    parameters:
+      - $ref: '#/components/parameters/Id'
+    get:
+      operationId: getAppointment
+      tags:
+        - Appointments
+      summary: Get an appointment
+      description: Retrieves a single appointment by ID.
+      responses:
+        '200':
+          description: The requested appointment.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /inventory:
+    get:
+      operationId: listInventory
+      tags:
+        - Inventory
+      summary: List inventory parts
+      description: >-
+        Lists a shop's parts inventory, filterable by part type and tire
+        attributes (ratio, diameter).
+      parameters:
+        - $ref: '#/components/parameters/Shop'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Size'
+        - name: partTypeId
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: ratio
+          in: query
+          required: false
+          description: Tire aspect ratio, when filtering tire inventory.
+          schema:
+            type: number
+        - name: diameter
+          in: query
+          required: false
+          description: Tire diameter, when filtering tire inventory.
+          schema:
+            type: number
+      responses:
+        '200':
+          description: A page of inventory parts.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryPartPage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /canned-jobs:
+    get:
+      operationId: listCannedJobs
+      tags:
+        - Canned Jobs
+      summary: List canned jobs
+      description: >-
+        Lists a shop's canned jobs - pre-built menu services bundling
+        standard labor and parts - available to apply to estimates.
+      parameters:
+        - $ref: '#/components/parameters/Shop'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Size'
+      responses:
+        '200':
+          description: A page of canned jobs.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CannedJobPage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: >-
+        OAuth 2.0 client credentials grant. Requires an approved Client
+        ID/Secret issued by Tekmetric after a manual request-access review
+        (reported at roughly 2-3 weeks).
+      flows:
+        clientCredentials:
+          tokenUrl: https://shop.tekmetric.com/api/v1/oauth/token
+          scopes: {}
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The numeric ID of the resource.
+      schema:
+        type: integer
+    Shop:
+      name: shop
+      in: query
+      required: false
+      description: The shop ID to scope the request to.
+      schema:
+        type: integer
+    Page:
+      name: page
+      in: query
+      required: false
+      description: Zero-based page number.
+      schema:
+        type: integer
+        default: 0
+    Size:
+      name: size
+      in: query
+      required: false
+      description: Page size.
+      schema:
+        type: integer
+        default: 20
+  responses:
+    Unauthorized:
+      description: Missing, invalid, or revoked access token.
+    NotFound:
+      description: The requested resource was not found.
+  schemas:
+    TokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        token_type:
+          type: string
+          example: Bearer
+        expires_in:
+          type: integer
+          description: >-
+            Reported token lifetime in seconds. Per third-party accounts,
+            tokens remain valid until explicitly revoked by Tekmetric
+            regardless of this value.
+        scope:
+          type: string
+          description: Space-separated shop IDs the client is authorized for.
+    Page:
+      type: object
+      description: Spring Data Page envelope used by all list endpoints.
+      properties:
+        totalPages:
+          type: integer
+        totalElements:
+          type: integer
+        first:
+          type: boolean
+        last:
+          type: boolean
+        size:
+          type: integer
+        number:
+          type: integer
+        numberOfElements:
+          type: integer
+    Currency:
+      type: number
+      format: double
+      description: Monetary value in dollars (Tekmetric stores cents internally).
+    Address:
+      type: object
+      properties:
+        id:
+          type: integer
+        address1:
+          type: string
+        address2:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip:
+          type: string
+        streetAddress:
+          type: string
+        fullAddress:
+          type: string
+    Phone:
+      type: object
+      properties:
+        id:
+          type: integer
+        number:
+          type: string
+        type:
+          type: string
+    Shop:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+        phone:
+          type: string
+        timezone:
+          type: string
+    Customer:
+      type: object
+      properties:
+        id:
+          type: integer
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        phone:
+          type: array
+          items:
+            $ref: '#/components/schemas/Phone'
+        address:
+          $ref: '#/components/schemas/Address'
+        eligibleForAccountsReceivable:
+          type: boolean
+        okForMarketing:
+          type: boolean
+        customerTypeId:
+          type: integer
+    CustomerPage:
+      allOf:
+        - $ref: '#/components/schemas/Page'
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                $ref: '#/components/schemas/Customer'
+    Vehicle:
+      type: object
+      properties:
+        id:
+          type: integer
+        customerId:
+          type: integer
+        vin:
+          type: string
+        year:
+          type: integer
+        make:
+          type: string
+        model:
+          type: string
+        subModel:
+          type: string
+        licensePlate:
+          type: string
+    VehiclePage:
+      allOf:
+        - $ref: '#/components/schemas/Page'
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                $ref: '#/components/schemas/Vehicle'
+    RepairOrder:
+      type: object
+      properties:
+        id:
+          type: integer
+        shopId:
+          type: integer
+        repairOrderNumber:
+          type: integer
+        customerId:
+          type: integer
+        vehicleId:
+          type: integer
+        repairOrderStatusId:
+          type: integer
+        totalSales:
+          $ref: '#/components/schemas/Currency'
+        createdDate:
+          type: string
+          format: date-time
+        updatedDate:
+          type: string
+          format: date-time
+        deletedDate:
+          type: string
+          format: date-time
+          nullable: true
+    RepairOrderPage:
+      allOf:
+        - $ref: '#/components/schemas/Page'
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                $ref: '#/components/schemas/RepairOrder'
+    Job:
+      type: object
+      properties:
+        id:
+          type: integer
+        repairOrderId:
+          type: integer
+        vehicleId:
+          type: integer
+        customerId:
+          type: integer
+        name:
+          type: string
+        authorized:
+          type: boolean
+        repairOrderStatusId:
+          type: integer
+        laborTotal:
+          $ref: '#/components/schemas/Currency'
+        partsTotal:
+          $ref: '#/components/schemas/Currency'
+    JobPage:
+      allOf:
+        - $ref: '#/components/schemas/Page'
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                $ref: '#/components/schemas/Job'
+    Employee:
+      type: object
+      properties:
+        id:
+          type: integer
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+    EmployeePage:
+      allOf:
+        - $ref: '#/components/schemas/Page'
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                $ref: '#/components/schemas/Employee'
+    Appointment:
+      type: object
+      properties:
+        id:
+          type: integer
+        shopId:
+          type: integer
+        customerId:
+          type: integer
+        vehicleId:
+          type: integer
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+        notes:
+          type: string
+    AppointmentPage:
+      allOf:
+        - $ref: '#/components/schemas/Page'
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                $ref: '#/components/schemas/Appointment'
+    InventoryPart:
+      type: object
+      properties:
+        id:
+          type: integer
+        partTypeId:
+          type: integer
+        partNumber:
+          type: string
+        description:
+          type: string
+        quantityOnHand:
+          type: number
+        ratio:
+          type: number
+          nullable: true
+        diameter:
+          type: number
+          nullable: true
+    InventoryPartPage:
+      allOf:
+        - $ref: '#/components/schemas/Page'
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                $ref: '#/components/schemas/InventoryPart'
+    CannedJob:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        smart:
+          type: boolean
+          description: Whether this is a "smart" canned job that adapts to vehicle fitment.
+    CannedJobPage:
+      allOf:
+        - $ref: '#/components/schemas/Page'
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                $ref: '#/components/schemas/CannedJob'

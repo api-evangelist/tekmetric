@@ -1,0 +1,30 @@
+{
+  "provider": "tekmetric",
+  "sources": [
+    "tekmetric-appointments-api-openapi.yml",
+    "tekmetric-canned-jobs-api-openapi.yml",
+    "tekmetric-customers-api-openapi.yml",
+    "tekmetric-employees-api-openapi.yml",
+    "tekmetric-inventory-api-openapi.yml",
+    "tekmetric-jobs-api-openapi.yml",
+    "tekmetric-repair-orders-api-openapi.yml",
+    "tekmetric-shops-api-openapi.yml",
+    "tekmetric-vehicles-api-openapi.yml"
+  ],
+  "outputs": [
+    "tekmetric-appointments-api-openapi.yml",
+    "tekmetric-canned-jobs-api-openapi.yml",
+    "tekmetric-customers-api-openapi.yml",
+    "tekmetric-employees-api-openapi.yml",
+    "tekmetric-inventory-api-openapi.yml",
+    "tekmetric-jobs-api-openapi.yml",
+    "tekmetric-repair-orders-api-openapi.yml",
+    "tekmetric-shops-api-openapi.yml",
+    "tekmetric-vehicles-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
