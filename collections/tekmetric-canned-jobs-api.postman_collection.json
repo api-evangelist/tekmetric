@@ -1,0 +1,207 @@
+{
+  "item": [
+    {
+      "id": "e5407723-5b9b-467f-806c-d19f2b0c5191",
+      "name": "Canned Jobs",
+      "description": {
+        "content": "Pre-built menu services bundling standard labor and parts.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c7c8ac67-cd39-45dc-8fbc-e18891d73aee",
+          "name": "List canned jobs",
+          "request": {
+            "name": "List canned jobs",
+            "description": {
+              "content": "Lists a shop's canned jobs - pre-built menu services bundling standard labor and parts - available to apply to estimates.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "canned-jobs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "shop",
+                  "value": "<integer>",
+                  "description": "The shop ID to scope the request to."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "0",
+                  "description": "Zero-based page number."
+                },
+                {
+                  "disabled": false,
+                  "key": "size",
+                  "value": "20",
+                  "description": "Page size."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a236e2ac-6d13-428f-a718-29cf38ef1557",
+              "name": "A page of canned jobs.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "canned-jobs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "shop",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "20"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"totalPages\": 8152,\n  \"totalElements\": 1177,\n  \"first\": false,\n  \"last\": false,\n  \"size\": 5024,\n  \"number\": 7876,\n  \"numberOfElements\": 4104,\n  \"content\": [\n    {\n      \"id\": 3225,\n      \"name\": \"string\",\n      \"description\": \"string\",\n      \"smart\": false\n    },\n    {\n      \"id\": 5054,\n      \"name\": \"string\",\n      \"description\": \"string\",\n      \"smart\": true\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "90975007-fe29-49f7-ae53-0a4e3e10e923",
+              "name": "Missing, invalid, or revoked access token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "canned-jobs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "shop",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "20"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://shop.tekmetric.com/api/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "accessTokenUrl",
+        "value": "https://shop.tekmetric.com/api/v1/oauth/token"
+      },
+      {
+        "key": "grant_type",
+        "value": "client_credentials"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "f5557193-12ae-4ada-b532-d965e6476baa",
+    "name": "Tekmetric Appointments Canned Jobs API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Tekmetric is a cloud-based auto repair shop management platform. Its REST API is partner-gated - access requires requesting credentials at api.tekmetric.com and Tekmetric's approval (reported at roughly 2-3 weeks); there is no self-serve signup or public API reference. The endpoints, parameters, and response envelope documented here are sourced from beetlebugorg/tekmetric-mcp, an independent open-source client that holds approved credentials and calls the live API - not from an official Tekmetric API reference document. Only read (GET) endpoints are documented because that is all the reference client implements; write endpoints may exist but are not evidenced in any public source.\n\nContact Support:\n Name: Tekmetric",
+      "type": "text/plain"
+    }
+  }
+}

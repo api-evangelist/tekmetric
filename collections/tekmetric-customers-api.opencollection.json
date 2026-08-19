@@ -1,0 +1,100 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tekmetric Appointments Customers API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://shop.tekmetric.com/api/v1/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Customers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List or search customers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://shop.tekmetric.com/api/v1/customers",
+            "params": [
+              {
+                "name": "shop",
+                "value": "",
+                "type": "query",
+                "description": "The shop ID to scope the request to."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Zero-based page number."
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "Page size."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Free-text search across name, email, and phone."
+              },
+              {
+                "name": "eligibleForAccountsReceivable",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "okForMarketing",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "customerTypeId",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Lists a shop's customers, optionally filtered by a search term (name, email, or phone) and customer attributes."
+        },
+        {
+          "info": {
+            "name": "Get a customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://shop.tekmetric.com/api/v1/customers/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The numeric ID of the resource."
+              }
+            ]
+          },
+          "docs": "Retrieves a single customer's contact info, addresses, and marketing/accounts-receivable flags by ID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

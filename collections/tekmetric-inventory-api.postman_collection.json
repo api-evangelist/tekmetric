@@ -1,0 +1,248 @@
+{
+  "item": [
+    {
+      "id": "f58bc4e8-1e56-47bf-89b5-8a051172c8c3",
+      "name": "Inventory",
+      "description": {
+        "content": "Parts and tire inventory.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "90fa520b-ef0f-44eb-8539-d1ba6c7b392d",
+          "name": "List inventory parts",
+          "request": {
+            "name": "List inventory parts",
+            "description": {
+              "content": "Lists a shop's parts inventory, filterable by part type and tire attributes (ratio, diameter).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "inventory"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "shop",
+                  "value": "<integer>",
+                  "description": "The shop ID to scope the request to."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "0",
+                  "description": "Zero-based page number."
+                },
+                {
+                  "disabled": false,
+                  "key": "size",
+                  "value": "20",
+                  "description": "Page size."
+                },
+                {
+                  "disabled": false,
+                  "key": "partTypeId",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "ratio",
+                  "value": "<number>",
+                  "description": "Tire aspect ratio, when filtering tire inventory."
+                },
+                {
+                  "disabled": false,
+                  "key": "diameter",
+                  "value": "<number>",
+                  "description": "Tire diameter, when filtering tire inventory."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e1e0b637-0d84-4a2f-8189-b5f3120b7be1",
+              "name": "A page of inventory parts.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "inventory"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "shop",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "20"
+                    },
+                    {
+                      "key": "partTypeId",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "ratio",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "diameter",
+                      "value": "<number>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"totalPages\": 1244,\n  \"totalElements\": 4000,\n  \"first\": false,\n  \"last\": false,\n  \"size\": 607,\n  \"number\": 2814,\n  \"numberOfElements\": 3721,\n  \"content\": [\n    {\n      \"id\": 544,\n      \"partTypeId\": 7766,\n      \"partNumber\": \"string\",\n      \"description\": \"string\",\n      \"quantityOnHand\": 8057.678431542516,\n      \"ratio\": 4871.408527484355,\n      \"diameter\": 3111.7497646733327\n    },\n    {\n      \"id\": 6404,\n      \"partTypeId\": 9710,\n      \"partNumber\": \"string\",\n      \"description\": \"string\",\n      \"quantityOnHand\": 8842.689534268566,\n      \"ratio\": 9777.710321756223,\n      \"diameter\": 6666.514139932006\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "97be343f-3216-427a-aeb9-4e4eb02fad5d",
+              "name": "Missing, invalid, or revoked access token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "inventory"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "shop",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "20"
+                    },
+                    {
+                      "key": "partTypeId",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "ratio",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "diameter",
+                      "value": "<number>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://shop.tekmetric.com/api/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "accessTokenUrl",
+        "value": "https://shop.tekmetric.com/api/v1/oauth/token"
+      },
+      {
+        "key": "grant_type",
+        "value": "client_credentials"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "db4aa04b-5ccf-461f-87b6-f1c82be223eb",
+    "name": "Tekmetric Appointments Inventory API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Tekmetric is a cloud-based auto repair shop management platform. Its REST API is partner-gated - access requires requesting credentials at api.tekmetric.com and Tekmetric's approval (reported at roughly 2-3 weeks); there is no self-serve signup or public API reference. The endpoints, parameters, and response envelope documented here are sourced from beetlebugorg/tekmetric-mcp, an independent open-source client that holds approved credentials and calls the live API - not from an official Tekmetric API reference document. Only read (GET) endpoints are documented because that is all the reference client implements; write endpoints may exist but are not evidenced in any public source.\n\nContact Support:\n Name: Tekmetric",
+      "type": "text/plain"
+    }
+  }
+}

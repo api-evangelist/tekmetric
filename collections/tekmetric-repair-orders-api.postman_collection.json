@@ -1,0 +1,451 @@
+{
+  "item": [
+    {
+      "id": "68cb6add-8289-484a-8f9c-e98270329343",
+      "name": "Repair Orders",
+      "description": {
+        "content": "Estimates and invoices tracking a vehicle's work.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "aeb37fd1-5d18-4fef-a9d7-08eb36e91e03",
+          "name": "List or filter repair orders",
+          "request": {
+            "name": "List or filter repair orders",
+            "description": {
+              "content": "Lists a shop's repair orders, filterable by repair order number, status, customer, or vehicle. Combining a date-range filter with a deleted-date filter returns only deleted records; call separately for active/updated versus deleted records and merge client-side.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "repair-orders"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "shop",
+                  "value": "<integer>",
+                  "description": "The shop ID to scope the request to."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "0",
+                  "description": "Zero-based page number."
+                },
+                {
+                  "disabled": false,
+                  "key": "size",
+                  "value": "20",
+                  "description": "Page size."
+                },
+                {
+                  "disabled": false,
+                  "key": "repairOrderNumber",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "repairOrderStatusId",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "customerId",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "vehicleId",
+                  "value": "<integer>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d7430847-f950-4bfb-aae8-705a65d1d8d7",
+              "name": "A page of repair orders.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repair-orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "shop",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "20"
+                    },
+                    {
+                      "key": "repairOrderNumber",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "repairOrderStatusId",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "customerId",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "vehicleId",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"totalPages\": 3517,\n  \"totalElements\": 4965,\n  \"first\": false,\n  \"last\": false,\n  \"size\": 3721,\n  \"number\": 5003,\n  \"numberOfElements\": 9090,\n  \"content\": [\n    {\n      \"id\": 4783,\n      \"shopId\": 1726,\n      \"repairOrderNumber\": 7593,\n      \"customerId\": 369,\n      \"vehicleId\": 6438,\n      \"repairOrderStatusId\": 5756,\n      \"totalSales\": 9186.859623898787,\n      \"createdDate\": \"2012-03-19T05:56:02.046Z\",\n      \"updatedDate\": \"1955-10-17T07:12:23.557Z\",\n      \"deletedDate\": \"1991-10-03T13:33:08.910Z\"\n    },\n    {\n      \"id\": 8416,\n      \"shopId\": 9343,\n      \"repairOrderNumber\": 7581,\n      \"customerId\": 9672,\n      \"vehicleId\": 5709,\n      \"repairOrderStatusId\": 3221,\n      \"totalSales\": 6600.997509437436,\n      \"createdDate\": \"1991-03-28T18:31:01.514Z\",\n      \"updatedDate\": \"1974-10-11T18:20:15.704Z\",\n      \"deletedDate\": \"2000-09-06T09:04:29.904Z\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "48a7555a-cdb2-4236-b312-e740052c9ac6",
+              "name": "Missing, invalid, or revoked access token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repair-orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "shop",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "20"
+                    },
+                    {
+                      "key": "repairOrderNumber",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "repairOrderStatusId",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "customerId",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "vehicleId",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c291b39e-4cb4-4f86-9127-4a532f88e053",
+          "name": "Get a repair order",
+          "request": {
+            "name": "Get a repair order",
+            "description": {
+              "content": "Retrieves a single repair order, including totals and workflow status, by ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "repair-orders",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "id",
+                  "description": "(Required) The numeric ID of the resource."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "59ae5f1b-e625-4062-89cc-32b476e93c03",
+              "name": "The requested repair order.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repair-orders",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The numeric ID of the resource."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 8493,\n  \"shopId\": 8335,\n  \"repairOrderNumber\": 7746,\n  \"customerId\": 6755,\n  \"vehicleId\": 791,\n  \"repairOrderStatusId\": 6032,\n  \"totalSales\": 6509.232653304851,\n  \"createdDate\": \"1962-10-02T15:07:22.383Z\",\n  \"updatedDate\": \"1990-06-27T22:52:47.505Z\",\n  \"deletedDate\": \"2008-06-04T08:34:27.807Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b242d2b3-f9fa-4b30-b835-a44fd1d8455a",
+              "name": "Missing, invalid, or revoked access token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repair-orders",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The numeric ID of the resource."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a82b12dd-47fe-4a76-9361-a69ce40445d0",
+              "name": "The requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repair-orders",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The numeric ID of the resource."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://shop.tekmetric.com/api/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "accessTokenUrl",
+        "value": "https://shop.tekmetric.com/api/v1/oauth/token"
+      },
+      {
+        "key": "grant_type",
+        "value": "client_credentials"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "b04c09fd-3c66-47ed-b790-56c7205aa561",
+    "name": "Tekmetric Appointments Repair Orders API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Tekmetric is a cloud-based auto repair shop management platform. Its REST API is partner-gated - access requires requesting credentials at api.tekmetric.com and Tekmetric's approval (reported at roughly 2-3 weeks); there is no self-serve signup or public API reference. The endpoints, parameters, and response envelope documented here are sourced from beetlebugorg/tekmetric-mcp, an independent open-source client that holds approved credentials and calls the live API - not from an official Tekmetric API reference document. Only read (GET) endpoints are documented because that is all the reference client implements; write endpoints may exist but are not evidenced in any public source.\n\nContact Support:\n Name: Tekmetric",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tekmetric Appointments Shops API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://shop.tekmetric.com/api/v1/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Shops",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Obtain an OAuth 2.0 access token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://shop.tekmetric.com/api/v1/oauth/token",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "grant_type",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Exchanges an approved Client ID/Secret (sent as HTTP Basic auth) for a bearer access token via the client_credentials grant. The token's scope field lists the space-separated shop IDs the client may access."
+        },
+        {
+          "info": {
+            "name": "List authorized shops",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://shop.tekmetric.com/api/v1/shops"
+          },
+          "docs": "Lists the shop records the authenticated OAuth client is scoped to."
+        },
+        {
+          "info": {
+            "name": "Get a shop",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://shop.tekmetric.com/api/v1/shops/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The numeric ID of the resource."
+              }
+            ]
+          },
+          "docs": "Retrieves a single shop's hours, labor rates, and settings by ID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
