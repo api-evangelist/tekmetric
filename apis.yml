@@ -193,6 +193,9 @@ apis:
   - type: OpenCollection
     url: collections/tekmetric.opencollection.json
 common:
+- type: CapabilityMap
+  url: capabilities/tekmetric-capability-edges.yml
+  name: Tekmetric Business Capability Map
 - type: AgenticAccess
   url: agentic-access/tekmetric-agentic-access.yml
 - type: TrustCenter

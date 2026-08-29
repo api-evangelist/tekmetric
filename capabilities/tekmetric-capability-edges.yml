@@ -1,0 +1,34 @@
+slug: tekmetric
+provider: Tekmetric
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Automotive & Mobility
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 2
+edges:
+- tag: Customers
+  spec_file: tekmetric-customers-api-openapi.yml
+  capability_id: BC-420.10
+  capability_id_l1: BC-420
+  capability_name: Customer Data Management
+  confidence: 0.7
+  evidence: 'GET /customers  listCustomers  List or search customers; schemas: Address, Phone, Customer,
+    CustomerPage'
+  reason: Read access to a customer master record with address and phone details — customer data management.
+    Confidence moderated because operations are read-only and the tag is generic.
+- tag: Inventory
+  spec_file: tekmetric-inventory-api-openapi.yml
+  capability_id: BC-530
+  capability_id_l1: BC-530
+  capability_name: Inventory Management
+  confidence: 0.7
+  evidence: 'GET /inventory  listInventory  List inventory parts; schemas: InventoryPartPage, InventoryPart'
+  reason: Lists parts inventory held by the repair shop — inventory management. Read-only listing does
+    not name a specific sub-capability (stock levels vs replenishment), so L2 left null.
