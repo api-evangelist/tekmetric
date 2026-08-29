@@ -10,6 +10,18 @@ description: Tekmetric is a cloud-based auto repair shop management platform (di
   authenticate with OAuth 2.0 client credentials against a sandbox or production
   base URL and read shop, customer, vehicle, repair order, job, employee,
   appointment, canned job, and inventory data.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: paid
   onboarding: self-serve
