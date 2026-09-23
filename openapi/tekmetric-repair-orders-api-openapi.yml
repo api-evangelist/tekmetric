@@ -1,7 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tekmetric Appointments Repair Orders API
-  description: Tekmetric is a cloud-based auto repair shop management platform. Its REST API is partner-gated - access requires requesting credentials at api.tekmetric.com and Tekmetric's approval (reported at roughly 2-3 weeks); there is no self-serve signup or public API reference. The endpoints, parameters, and response envelope documented here are sourced from beetlebugorg/tekmetric-mcp, an independent open-source client that holds approved credentials and calls the live API - not from an official Tekmetric API reference document. Only read (GET) endpoints are documented because that is all the reference client implements; write endpoints may exist but are not evidenced in any public source.
+  title: Tekmetric Repair Orders API
+  description: Tekmetric is a cloud-based auto repair shop management platform.
   version: v1
   contact:
     name: Tekmetric
@@ -98,19 +98,6 @@ components:
           type: integer
         numberOfElements:
           type: integer
-    Currency:
-      type: number
-      format: double
-      description: Monetary value in dollars (Tekmetric stores cents internally).
-    RepairOrderPage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          content:
-            type: array
-            items:
-              $ref: '#/components/schemas/RepairOrder'
     RepairOrder:
       type: object
       properties:
@@ -135,24 +122,24 @@ components:
           type: string
           format: date-time
         deletedDate:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
+    Currency:
+      type: number
+      format: double
+      description: Monetary value in dollars (Tekmetric stores cents internally).
+    RepairOrderPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          content:
+            type: array
+            items:
+              $ref: '#/components/schemas/RepairOrder'
   parameters:
-    Shop:
-      name: shop
-      in: query
-      required: false
-      description: The shop ID to scope the request to.
-      schema:
-        type: integer
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The numeric ID of the resource.
-      schema:
-        type: integer
     Page:
       name: page
       in: query
@@ -161,6 +148,13 @@ components:
       schema:
         type: integer
         default: 0
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The numeric ID of the resource.
+      schema:
+        type: integer
     Size:
       name: size
       in: query
@@ -169,11 +163,18 @@ components:
       schema:
         type: integer
         default: 20
+    Shop:
+      name: shop
+      in: query
+      required: false
+      description: The shop ID to scope the request to.
+      schema:
+        type: integer
   responses:
-    NotFound:
-      description: The requested resource was not found.
     Unauthorized:
       description: Missing, invalid, or revoked access token.
+    NotFound:
+      description: The requested resource was not found.
   securitySchemes:
     oauth2:
       type: oauth2

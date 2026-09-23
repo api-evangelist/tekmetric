@@ -1,7 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Tekmetric Appointments Shops API
-  description: Tekmetric is a cloud-based auto repair shop management platform. Its REST API is partner-gated - access requires requesting credentials at api.tekmetric.com and Tekmetric's approval (reported at roughly 2-3 weeks); there is no self-serve signup or public API reference. The endpoints, parameters, and response envelope documented here are sourced from beetlebugorg/tekmetric-mcp, an independent open-source client that holds approved credentials and calls the live API - not from an official Tekmetric API reference document. Only read (GET) endpoints are documented because that is all the reference client implements; write endpoints may exist but are not evidenced in any public source.
+  title: Tekmetric Shops API
+  description: Tekmetric is a cloud-based auto repair shop management platform.
   version: v1
   contact:
     name: Tekmetric
@@ -101,20 +101,6 @@ components:
           type: string
         timezone:
           type: string
-    TokenResponse:
-      type: object
-      properties:
-        access_token:
-          type: string
-        token_type:
-          type: string
-          example: Bearer
-        expires_in:
-          type: integer
-          description: Reported token lifetime in seconds. Per third-party accounts, tokens remain valid until explicitly revoked by Tekmetric regardless of this value.
-        scope:
-          type: string
-          description: Space-separated shop IDs the client is authorized for.
     Address:
       type: object
       properties:
@@ -134,6 +120,25 @@ components:
           type: string
         fullAddress:
           type: string
+    TokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        token_type:
+          type: string
+          example: Bearer
+        expires_in:
+          type: integer
+          description: Reported token lifetime in seconds. Per third-party accounts, tokens remain valid until explicitly revoked by Tekmetric regardless of this value.
+        scope:
+          type: string
+          description: Space-separated shop IDs the client is authorized for.
+  responses:
+    Unauthorized:
+      description: Missing, invalid, or revoked access token.
+    NotFound:
+      description: The requested resource was not found.
   parameters:
     Id:
       name: id
@@ -142,11 +147,6 @@ components:
       description: The numeric ID of the resource.
       schema:
         type: integer
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-    Unauthorized:
-      description: Missing, invalid, or revoked access token.
   securitySchemes:
     oauth2:
       type: oauth2

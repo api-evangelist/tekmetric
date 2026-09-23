@@ -1,15 +1,7 @@
 {
   "provider": "tekmetric",
   "sources": [
-    "tekmetric-appointments-api-openapi.yml",
-    "tekmetric-canned-jobs-api-openapi.yml",
-    "tekmetric-customers-api-openapi.yml",
-    "tekmetric-employees-api-openapi.yml",
-    "tekmetric-inventory-api-openapi.yml",
-    "tekmetric-jobs-api-openapi.yml",
-    "tekmetric-repair-orders-api-openapi.yml",
-    "tekmetric-shops-api-openapi.yml",
-    "tekmetric-vehicles-api-openapi.yml"
+    "_original/tekmetric-openapi.yml"
   ],
   "outputs": [
     "tekmetric-appointments-api-openapi.yml",
@@ -25,6 +17,20 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "tekmetric-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "tekmetric-appointments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "tekmetric-canned-jobs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "tekmetric-customers-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "tekmetric-employees-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "tekmetric-inventory-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "tekmetric-jobs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "tekmetric-repair-orders-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "tekmetric-shops-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "tekmetric-vehicles-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
