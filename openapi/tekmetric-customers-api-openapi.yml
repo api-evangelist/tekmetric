@@ -81,6 +81,25 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
+    Address:
+      type: object
+      properties:
+        id:
+          type: integer
+        address1:
+          type: string
+        address2:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip:
+          type: string
+        streetAddress:
+          type: string
+        fullAddress:
+          type: string
     Phone:
       type: object
       properties:
@@ -90,15 +109,6 @@ components:
           type: string
         type:
           type: string
-    CustomerPage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          content:
-            type: array
-            items:
-              $ref: '#/components/schemas/Customer'
     Page:
       type: object
       description: Spring Data Page envelope used by all list endpoints.
@@ -117,6 +127,15 @@ components:
           type: integer
         numberOfElements:
           type: integer
+    CustomerPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          content:
+            type: array
+            items:
+              $ref: '#/components/schemas/Customer'
     Customer:
       type: object
       properties:
@@ -140,25 +159,6 @@ components:
           type: boolean
         customerTypeId:
           type: integer
-    Address:
-      type: object
-      properties:
-        id:
-          type: integer
-        address1:
-          type: string
-        address2:
-          type: string
-        city:
-          type: string
-        state:
-          type: string
-        zip:
-          type: string
-        streetAddress:
-          type: string
-        fullAddress:
-          type: string
   parameters:
     Page:
       name: page
@@ -168,6 +168,13 @@ components:
       schema:
         type: integer
         default: 0
+    Shop:
+      name: shop
+      in: query
+      required: false
+      description: The shop ID to scope the request to.
+      schema:
+        type: integer
     Id:
       name: id
       in: path
@@ -183,18 +190,11 @@ components:
       schema:
         type: integer
         default: 20
-    Shop:
-      name: shop
-      in: query
-      required: false
-      description: The shop ID to scope the request to.
-      schema:
-        type: integer
   responses:
-    Unauthorized:
-      description: Missing, invalid, or revoked access token.
     NotFound:
       description: The requested resource was not found.
+    Unauthorized:
+      description: Missing, invalid, or revoked access token.
   securitySchemes:
     oauth2:
       type: oauth2

@@ -88,19 +88,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
-    Shop:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        address:
-          $ref: '#/components/schemas/Address'
-        phone:
-          type: string
-        timezone:
-          type: string
     Address:
       type: object
       properties:
@@ -134,11 +121,19 @@ components:
         scope:
           type: string
           description: Space-separated shop IDs the client is authorized for.
-  responses:
-    Unauthorized:
-      description: Missing, invalid, or revoked access token.
-    NotFound:
-      description: The requested resource was not found.
+    Shop:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+        phone:
+          type: string
+        timezone:
+          type: string
   parameters:
     Id:
       name: id
@@ -147,6 +142,11 @@ components:
       description: The numeric ID of the resource.
       schema:
         type: integer
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+    Unauthorized:
+      description: Missing, invalid, or revoked access token.
   securitySchemes:
     oauth2:
       type: oauth2
