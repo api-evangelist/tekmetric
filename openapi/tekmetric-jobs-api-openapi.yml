@@ -85,6 +85,15 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
+    JobPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          content:
+            type: array
+            items:
+              $ref: '#/components/schemas/Job'
     Job:
       type: object
       properties:
@@ -106,15 +115,6 @@ components:
           $ref: '#/components/schemas/Currency'
         partsTotal:
           $ref: '#/components/schemas/Currency'
-    JobPage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          content:
-            type: array
-            items:
-              $ref: '#/components/schemas/Job'
     Currency:
       type: number
       format: double
@@ -153,6 +153,13 @@ components:
       description: The shop ID to scope the request to.
       schema:
         type: integer
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The numeric ID of the resource.
+      schema:
+        type: integer
     Size:
       name: size
       in: query
@@ -161,13 +168,6 @@ components:
       schema:
         type: integer
         default: 20
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The numeric ID of the resource.
-      schema:
-        type: integer
   responses:
     NotFound:
       description: The requested resource was not found.

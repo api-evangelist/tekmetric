@@ -59,55 +59,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  schemas:
-    Employee:
-      type: object
-      properties:
-        id:
-          type: integer
-        firstName:
-          type: string
-        lastName:
-          type: string
-        email:
-          type: string
-        role:
-          type: string
-    EmployeePage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          content:
-            type: array
-            items:
-              $ref: '#/components/schemas/Employee'
-    Page:
-      type: object
-      description: Spring Data Page envelope used by all list endpoints.
-      properties:
-        totalPages:
-          type: integer
-        totalElements:
-          type: integer
-        first:
-          type: boolean
-        last:
-          type: boolean
-        size:
-          type: integer
-        number:
-          type: integer
-        numberOfElements:
-          type: integer
   parameters:
-    Shop:
-      name: shop
-      in: query
-      required: false
-      description: The shop ID to scope the request to.
-      schema:
-        type: integer
     Page:
       name: page
       in: query
@@ -116,6 +68,13 @@ components:
       schema:
         type: integer
         default: 0
+    Shop:
+      name: shop
+      in: query
+      required: false
+      description: The shop ID to scope the request to.
+      schema:
+        type: integer
     Id:
       name: id
       in: path
@@ -136,6 +95,47 @@ components:
       description: The requested resource was not found.
     Unauthorized:
       description: Missing, invalid, or revoked access token.
+  schemas:
+    EmployeePage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          content:
+            type: array
+            items:
+              $ref: '#/components/schemas/Employee'
+    Employee:
+      type: object
+      properties:
+        id:
+          type: integer
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+    Page:
+      type: object
+      description: Spring Data Page envelope used by all list endpoints.
+      properties:
+        totalPages:
+          type: integer
+        totalElements:
+          type: integer
+        first:
+          type: boolean
+        last:
+          type: boolean
+        size:
+          type: integer
+        number:
+          type: integer
+        numberOfElements:
+          type: integer
   securitySchemes:
     oauth2:
       type: oauth2

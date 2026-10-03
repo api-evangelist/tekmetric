@@ -70,6 +70,53 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  schemas:
+    Vehicle:
+      type: object
+      properties:
+        id:
+          type: integer
+        customerId:
+          type: integer
+        vin:
+          type: string
+        year:
+          type: integer
+        make:
+          type: string
+        model:
+          type: string
+        subModel:
+          type: string
+        licensePlate:
+          type: string
+    Page:
+      type: object
+      description: Spring Data Page envelope used by all list endpoints.
+      properties:
+        totalPages:
+          type: integer
+        totalElements:
+          type: integer
+        first:
+          type: boolean
+        last:
+          type: boolean
+        size:
+          type: integer
+        number:
+          type: integer
+        numberOfElements:
+          type: integer
+    VehiclePage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          content:
+            type: array
+            items:
+              $ref: '#/components/schemas/Vehicle'
   parameters:
     Page:
       name: page
@@ -106,53 +153,6 @@ components:
       description: The requested resource was not found.
     Unauthorized:
       description: Missing, invalid, or revoked access token.
-  schemas:
-    Page:
-      type: object
-      description: Spring Data Page envelope used by all list endpoints.
-      properties:
-        totalPages:
-          type: integer
-        totalElements:
-          type: integer
-        first:
-          type: boolean
-        last:
-          type: boolean
-        size:
-          type: integer
-        number:
-          type: integer
-        numberOfElements:
-          type: integer
-    VehiclePage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          content:
-            type: array
-            items:
-              $ref: '#/components/schemas/Vehicle'
-    Vehicle:
-      type: object
-      properties:
-        id:
-          type: integer
-        customerId:
-          type: integer
-        vin:
-          type: string
-        year:
-          type: integer
-        make:
-          type: string
-        model:
-          type: string
-        subModel:
-          type: string
-        licensePlate:
-          type: string
   securitySchemes:
     oauth2:
       type: oauth2

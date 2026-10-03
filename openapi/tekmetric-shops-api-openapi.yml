@@ -87,6 +87,19 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+    Unauthorized:
+      description: Missing, invalid, or revoked access token.
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The numeric ID of the resource.
+      schema:
+        type: integer
   schemas:
     Address:
       type: object
@@ -107,6 +120,19 @@ components:
           type: string
         fullAddress:
           type: string
+    Shop:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+        phone:
+          type: string
+        timezone:
+          type: string
     TokenResponse:
       type: object
       properties:
@@ -121,32 +147,6 @@ components:
         scope:
           type: string
           description: Space-separated shop IDs the client is authorized for.
-    Shop:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        address:
-          $ref: '#/components/schemas/Address'
-        phone:
-          type: string
-        timezone:
-          type: string
-  parameters:
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The numeric ID of the resource.
-      schema:
-        type: integer
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-    Unauthorized:
-      description: Missing, invalid, or revoked access token.
   securitySchemes:
     oauth2:
       type: oauth2
