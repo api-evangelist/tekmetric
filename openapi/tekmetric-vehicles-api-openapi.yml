@@ -71,6 +71,15 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
+    VehiclePage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          content:
+            type: array
+            items:
+              $ref: '#/components/schemas/Vehicle'
     Vehicle:
       type: object
       properties:
@@ -108,16 +117,20 @@ components:
           type: integer
         numberOfElements:
           type: integer
-    VehiclePage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          content:
-            type: array
-            items:
-              $ref: '#/components/schemas/Vehicle'
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+    Unauthorized:
+      description: Missing, invalid, or revoked access token.
   parameters:
+    Size:
+      name: size
+      in: query
+      required: false
+      description: Page size.
+      schema:
+        type: integer
+        default: 20
     Page:
       name: page
       in: query
@@ -140,19 +153,6 @@ components:
       description: The numeric ID of the resource.
       schema:
         type: integer
-    Size:
-      name: size
-      in: query
-      required: false
-      description: Page size.
-      schema:
-        type: integer
-        default: 20
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-    Unauthorized:
-      description: Missing, invalid, or revoked access token.
   securitySchemes:
     oauth2:
       type: oauth2

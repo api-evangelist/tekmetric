@@ -85,36 +85,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
-    JobPage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          content:
-            type: array
-            items:
-              $ref: '#/components/schemas/Job'
-    Job:
-      type: object
-      properties:
-        id:
-          type: integer
-        repairOrderId:
-          type: integer
-        vehicleId:
-          type: integer
-        customerId:
-          type: integer
-        name:
-          type: string
-        authorized:
-          type: boolean
-        repairOrderStatusId:
-          type: integer
-        laborTotal:
-          $ref: '#/components/schemas/Currency'
-        partsTotal:
-          $ref: '#/components/schemas/Currency'
     Currency:
       type: number
       format: double
@@ -137,6 +107,41 @@ components:
           type: integer
         numberOfElements:
           type: integer
+    Job:
+      type: object
+      properties:
+        id:
+          type: integer
+        repairOrderId:
+          type: integer
+        vehicleId:
+          type: integer
+        customerId:
+          type: integer
+        name:
+          type: string
+        authorized:
+          type: boolean
+        repairOrderStatusId:
+          type: integer
+        laborTotal:
+          $ref: '#/components/schemas/Currency'
+        partsTotal:
+          $ref: '#/components/schemas/Currency'
+    JobPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          content:
+            type: array
+            items:
+              $ref: '#/components/schemas/Job'
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+    Unauthorized:
+      description: Missing, invalid, or revoked access token.
   parameters:
     Page:
       name: page
@@ -146,6 +151,14 @@ components:
       schema:
         type: integer
         default: 0
+    Size:
+      name: size
+      in: query
+      required: false
+      description: Page size.
+      schema:
+        type: integer
+        default: 20
     Shop:
       name: shop
       in: query
@@ -160,19 +173,6 @@ components:
       description: The numeric ID of the resource.
       schema:
         type: integer
-    Size:
-      name: size
-      in: query
-      required: false
-      description: Page size.
-      schema:
-        type: integer
-        default: 20
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-    Unauthorized:
-      description: Missing, invalid, or revoked access token.
   securitySchemes:
     oauth2:
       type: oauth2

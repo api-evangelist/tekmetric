@@ -59,6 +59,11 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+    Unauthorized:
+      description: Missing, invalid, or revoked access token.
   parameters:
     Page:
       name: page
@@ -68,6 +73,14 @@ components:
       schema:
         type: integer
         default: 0
+    Size:
+      name: size
+      in: query
+      required: false
+      description: Page size.
+      schema:
+        type: integer
+        default: 20
     Shop:
       name: shop
       in: query
@@ -82,29 +95,7 @@ components:
       description: The numeric ID of the resource.
       schema:
         type: integer
-    Size:
-      name: size
-      in: query
-      required: false
-      description: Page size.
-      schema:
-        type: integer
-        default: 20
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-    Unauthorized:
-      description: Missing, invalid, or revoked access token.
   schemas:
-    EmployeePage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          content:
-            type: array
-            items:
-              $ref: '#/components/schemas/Employee'
     Employee:
       type: object
       properties:
@@ -136,6 +127,15 @@ components:
           type: integer
         numberOfElements:
           type: integer
+    EmployeePage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          content:
+            type: array
+            items:
+              $ref: '#/components/schemas/Employee'
   securitySchemes:
     oauth2:
       type: oauth2

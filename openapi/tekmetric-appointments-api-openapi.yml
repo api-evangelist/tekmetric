@@ -75,6 +75,11 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+    Unauthorized:
+      description: Missing, invalid, or revoked access token.
   parameters:
     Page:
       name: page
@@ -84,6 +89,14 @@ components:
       schema:
         type: integer
         default: 0
+    Size:
+      name: size
+      in: query
+      required: false
+      description: Page size.
+      schema:
+        type: integer
+        default: 20
     Shop:
       name: shop
       in: query
@@ -98,19 +111,6 @@ components:
       description: The numeric ID of the resource.
       schema:
         type: integer
-    Size:
-      name: size
-      in: query
-      required: false
-      description: Page size.
-      schema:
-        type: integer
-        default: 20
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-    Unauthorized:
-      description: Missing, invalid, or revoked access token.
   schemas:
     AppointmentPage:
       allOf:
@@ -121,24 +121,6 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/Appointment'
-    Page:
-      type: object
-      description: Spring Data Page envelope used by all list endpoints.
-      properties:
-        totalPages:
-          type: integer
-        totalElements:
-          type: integer
-        first:
-          type: boolean
-        last:
-          type: boolean
-        size:
-          type: integer
-        number:
-          type: integer
-        numberOfElements:
-          type: integer
     Appointment:
       type: object
       properties:
@@ -158,6 +140,24 @@ components:
           format: date-time
         notes:
           type: string
+    Page:
+      type: object
+      description: Spring Data Page envelope used by all list endpoints.
+      properties:
+        totalPages:
+          type: integer
+        totalElements:
+          type: integer
+        first:
+          type: boolean
+        last:
+          type: boolean
+        size:
+          type: integer
+        number:
+          type: integer
+        numberOfElements:
+          type: integer
   securitySchemes:
     oauth2:
       type: oauth2

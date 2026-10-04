@@ -92,34 +92,7 @@ components:
       description: The requested resource was not found.
     Unauthorized:
       description: Missing, invalid, or revoked access token.
-  parameters:
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The numeric ID of the resource.
-      schema:
-        type: integer
   schemas:
-    Address:
-      type: object
-      properties:
-        id:
-          type: integer
-        address1:
-          type: string
-        address2:
-          type: string
-        city:
-          type: string
-        state:
-          type: string
-        zip:
-          type: string
-        streetAddress:
-          type: string
-        fullAddress:
-          type: string
     Shop:
       type: object
       properties:
@@ -147,6 +120,33 @@ components:
         scope:
           type: string
           description: Space-separated shop IDs the client is authorized for.
+    Address:
+      type: object
+      properties:
+        id:
+          type: integer
+        address1:
+          type: string
+        address2:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip:
+          type: string
+        streetAddress:
+          type: string
+        fullAddress:
+          type: string
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The numeric ID of the resource.
+      schema:
+        type: integer
   securitySchemes:
     oauth2:
       type: oauth2
