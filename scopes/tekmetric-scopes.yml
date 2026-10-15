@@ -1,17 +1,73 @@
-generated: '2026-07-11'
-method: derived
-source: openapi/tekmetric-openapi.yml
+generated: '2026-10-14'
+method: none
+source: openapi/tekmetric-appointments-api-openapi.yml, openapi/tekmetric-canned-jobs-api-openapi.yml,
+  openapi/tekmetric-customers-api-openapi.yml, openapi/tekmetric-employees-api-openapi.yml,
+  openapi/tekmetric-inventory-api-openapi.yml, openapi/tekmetric-jobs-api-openapi.yml, openapi/tekmetric-repair-orders-api-openapi.yml,
+  openapi/tekmetric-shops-api-openapi.yml, openapi/tekmetric-vehicles-api-openapi.yml
 schemes:
 - name: oauth2
-  source: openapi/tekmetric-openapi.yml
+  source: openapi/tekmetric-appointments-api-openapi.yml
   flows:
   - flow: clientCredentials
     tokenUrl: https://shop.tekmetric.com/api/v1/oauth/token
   description: OAuth 2.0 client credentials grant. Requires an approved Client ID/Secret issued
     by Tekmetric after a manual request-access review (reported at roughly 2-3 weeks).
-docs: https://api.tekmetric.com
-note: Tekmetric does not publish OAuth permission scopes - the API uses an OAuth 2.0
-  client credentials grant behind a partner approval gate (https://api.tekmetric.com),
-  and the token response's scope field carries the space-separated Shop IDs the client
-  is authorized for rather than permission scopes.
+- name: oauth2
+  source: openapi/tekmetric-canned-jobs-api-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://shop.tekmetric.com/api/v1/oauth/token
+  description: OAuth 2.0 client credentials grant. Requires an approved Client ID/Secret issued
+    by Tekmetric after a manual request-access review (reported at roughly 2-3 weeks).
+- name: oauth2
+  source: openapi/tekmetric-customers-api-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://shop.tekmetric.com/api/v1/oauth/token
+  description: OAuth 2.0 client credentials grant. Requires an approved Client ID/Secret issued
+    by Tekmetric after a manual request-access review (reported at roughly 2-3 weeks).
+- name: oauth2
+  source: openapi/tekmetric-employees-api-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://shop.tekmetric.com/api/v1/oauth/token
+  description: OAuth 2.0 client credentials grant. Requires an approved Client ID/Secret issued
+    by Tekmetric after a manual request-access review (reported at roughly 2-3 weeks).
+- name: oauth2
+  source: openapi/tekmetric-inventory-api-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://shop.tekmetric.com/api/v1/oauth/token
+  description: OAuth 2.0 client credentials grant. Requires an approved Client ID/Secret issued
+    by Tekmetric after a manual request-access review (reported at roughly 2-3 weeks).
+- name: oauth2
+  source: openapi/tekmetric-jobs-api-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://shop.tekmetric.com/api/v1/oauth/token
+  description: OAuth 2.0 client credentials grant. Requires an approved Client ID/Secret issued
+    by Tekmetric after a manual request-access review (reported at roughly 2-3 weeks).
+- name: oauth2
+  source: openapi/tekmetric-repair-orders-api-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://shop.tekmetric.com/api/v1/oauth/token
+  description: OAuth 2.0 client credentials grant. Requires an approved Client ID/Secret issued
+    by Tekmetric after a manual request-access review (reported at roughly 2-3 weeks).
+- name: oauth2
+  source: openapi/tekmetric-shops-api-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://shop.tekmetric.com/api/v1/oauth/token
+  description: OAuth 2.0 client credentials grant. Requires an approved Client ID/Secret issued
+    by Tekmetric after a manual request-access review (reported at roughly 2-3 weeks).
+- name: oauth2
+  source: openapi/tekmetric-vehicles-api-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://shop.tekmetric.com/api/v1/oauth/token
+  description: OAuth 2.0 client credentials grant. Requires an approved Client ID/Secret issued
+    by Tekmetric after a manual request-access review (reported at roughly 2-3 weeks).
 scopes: []
+note: The OAuth2 security scheme(s) in the OpenAPI declare no scopes, and no security requirement
+  references one.
