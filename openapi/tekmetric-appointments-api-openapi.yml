@@ -75,12 +75,14 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-    Unauthorized:
-      description: Missing, invalid, or revoked access token.
   parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The numeric ID of the resource.
+      schema:
+        type: integer
     Page:
       name: page
       in: query
@@ -89,6 +91,13 @@ components:
       schema:
         type: integer
         default: 0
+    Shop:
+      name: shop
+      in: query
+      required: false
+      description: The shop ID to scope the request to.
+      schema:
+        type: integer
     Size:
       name: size
       in: query
@@ -97,20 +106,6 @@ components:
       schema:
         type: integer
         default: 20
-    Shop:
-      name: shop
-      in: query
-      required: false
-      description: The shop ID to scope the request to.
-      schema:
-        type: integer
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The numeric ID of the resource.
-      schema:
-        type: integer
   schemas:
     AppointmentPage:
       allOf:
@@ -121,6 +116,24 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/Appointment'
+    Page:
+      type: object
+      description: Spring Data Page envelope used by all list endpoints.
+      properties:
+        totalPages:
+          type: integer
+        totalElements:
+          type: integer
+        first:
+          type: boolean
+        last:
+          type: boolean
+        size:
+          type: integer
+        number:
+          type: integer
+        numberOfElements:
+          type: integer
     Appointment:
       type: object
       properties:
@@ -140,24 +153,11 @@ components:
           format: date-time
         notes:
           type: string
-    Page:
-      type: object
-      description: Spring Data Page envelope used by all list endpoints.
-      properties:
-        totalPages:
-          type: integer
-        totalElements:
-          type: integer
-        first:
-          type: boolean
-        last:
-          type: boolean
-        size:
-          type: integer
-        number:
-          type: integer
-        numberOfElements:
-          type: integer
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+    Unauthorized:
+      description: Missing, invalid, or revoked access token.
   securitySchemes:
     oauth2:
       type: oauth2
